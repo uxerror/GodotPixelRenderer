@@ -1,0 +1,8 @@
+res://PixelRenderer/PixelRenderer.tscn
+res://PixelRenderer/data/theme.tres
+res://PixelRenderer/data/PixelArt.gdshader
+res://PixelRenderer/data/PixelMaterial.tres
+res://PixelRenderer/data/scripts/lighting.gd
+res://PixelRenderer/data/scripts/pixel_material.gd
+res://PixelRenderer/data/Gizmo.tres
+res://PixelRenderer/data/scripts/gizmo.gd

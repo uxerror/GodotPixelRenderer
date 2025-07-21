@@ -1,0 +1,1521 @@
+[gd_scene load_steps=45 format=3 uid="uid://y4o6ttmh8hb4"]
+
+[ext_resource type="Script" uid="uid://dhq1ywbp8nv12" path="res://PixelRenderer/data/scripts/PixelRenderer.gd" id="1_5ibnk"]
+[ext_resource type="Material" uid="uid://dn8s72rfum4y4" path="res://PixelRenderer/data/Gizmo.tres" id="2_6vt7t"]
+[ext_resource type="Theme" uid="uid://bcwmv53i5brfs" path="res://PixelRenderer/data/theme.tres" id="2_l23g4"]
+[ext_resource type="Material" uid="uid://bmhdt60ax1int" path="res://PixelRenderer/data/PixelMaterial.tres" id="3_v52r1"]
+[ext_resource type="Texture2D" uid="uid://dt7vukhh5pm4c" path="res://PixelRenderer/data/icons/anim_play.png" id="4_6wj3c"]
+[ext_resource type="Texture2D" uid="uid://75s28vduypuu" path="res://PixelRenderer/data/icons/folder.png" id="4_sen5r"]
+[ext_resource type="Texture2D" uid="uid://d3o8isbpbhfrw" path="res://PixelRenderer.png" id="4_x1hdl"]
+[ext_resource type="Texture2D" uid="uid://bm2gonmtadb85" path="res://PixelRenderer/data/icons/anim_pause.png" id="5_t0cwl"]
+[ext_resource type="Texture2D" uid="uid://b3p50ln0p60ss" path="res://PixelRenderer/data/icons/anim_stop.png" id="6_l23g4"]
+[ext_resource type="Texture2D" uid="uid://duc0vk1lm3pej" path="res://PixelRenderer/data/icons/arrow_up.png" id="7_klpv1"]
+[ext_resource type="Texture2D" uid="uid://sg16xfs24t3s" path="res://PixelRenderer/data/icons/anim_loop.png" id="7_wwtbg"]
+[ext_resource type="Texture2D" uid="uid://7k7x8v1o7p4r" path="res://PixelRenderer/data/icons/adj_move.png" id="8_6vt7t"]
+[ext_resource type="Texture2D" uid="uid://dhmu2nm041i3" path="res://PixelRenderer/data/icons/arrow_down.png" id="8_75uvr"]
+[ext_resource type="Texture2D" uid="uid://ph4xy8gbtok2" path="res://PixelRenderer/data/icons/resolution.png" id="8_t0cwl"]
+[ext_resource type="Texture2D" uid="uid://dnwx3aaw136ru" path="res://PixelRenderer/data/icons/reset.png" id="9_ilx0h"]
+[ext_resource type="Texture2D" uid="uid://brtfjyl85gx7i" path="res://PixelRenderer/data/icons/export.png" id="9_l23g4"]
+[ext_resource type="Texture2D" uid="uid://c540ks57ps2ea" path="res://PixelRenderer/data/icons/arrow_left.png" id="9_lbuph"]
+[ext_resource type="Texture2D" uid="uid://tj5g6kmbm3bu" path="res://PixelRenderer/data/icons/arrow_right.png" id="10_3lf5q"]
+[ext_resource type="Texture2D" uid="uid://dge54wpfwdlox" path="res://PixelRenderer/data/icons/adj_rotate.png" id="10_x1hdl"]
+[ext_resource type="Texture2D" uid="uid://dt5myij2v6fi5" path="res://PixelRenderer/data/icons/adj_scale.png" id="11_5xf31"]
+[ext_resource type="Script" uid="uid://8l5njo0tda0d" path="res://PixelRenderer/data/scripts/models_handler.gd" id="11_8egxh"]
+[ext_resource type="Texture2D" uid="uid://dfqjv7wsmr8w2" path="res://PixelRenderer/data/icons/axis.png" id="14_ilx0h"]
+[ext_resource type="Texture2D" uid="uid://do8j5up0p14f8" path="res://PixelRenderer/data/icons/origin.png" id="15_x1hdl"]
+[ext_resource type="Texture2D" uid="uid://kpkb6h35yaa0" path="res://PixelRenderer/data/icons/grid.png" id="16_5xf31"]
+[ext_resource type="Script" uid="uid://cy7ia51udvh3c" path="res://PixelRenderer/data/scripts/pixel_material.gd" id="16_yc5xn"]
+[ext_resource type="Script" uid="uid://d708vjkebik7" path="res://PixelRenderer/data/scripts/lighting.gd" id="18_ilx0h"]
+[ext_resource type="Script" uid="uid://b8u1xt88r3h1j" path="res://PixelRenderer/data/scripts/gizmo.gd" id="19_ilx0h"]
+[ext_resource type="Texture2D" uid="uid://8aamt3gec8d5" path="res://PixelRenderer/data/icons/save.png" id="22_6vt7t"]
+[ext_resource type="Script" uid="uid://bl5gdvkylmyg8" path="res://PixelRenderer/data/scripts/models_spawner.gd" id="22_t0cwl"]
+[ext_resource type="Texture2D" uid="uid://b1eg0gu4npj5r" path="res://PixelRenderer/data/icons/delete.png" id="23_ilx0h"]
+[ext_resource type="PackedScene" uid="uid://6f4rhpj0da3q" path="res://Sample/Skeleton_Minion.glb" id="27_wwtbg"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_6vt7t"]
+size = Vector3(0.01, 100, 0.01)
+
+[sub_resource type="SphereMesh" id="SphereMesh_ilx0h"]
+radius = 0.1
+height = 0.2
+
+[sub_resource type="BoxMesh" id="BoxMesh_x1hdl"]
+size = Vector3(0.01, 0.5, 0.01)
+
+[sub_resource type="Environment" id="Environment_wwtbg"]
+background_energy_multiplier = 2.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5aq5t"]
+bg_color = Color(0.12549, 0.12549, 0.12549, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_l23g4"]
+bg_color = Color(0.176471, 0.176471, 0.176471, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tkbio"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_tkbio"]
+viewport_path = NodePath("SubViewport")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_x1hdl"]
+bg_color = Color(0.140447, 0.140447, 0.140447, 1)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_6vt7t"]
+viewport_path = NodePath("SubViewport2")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6vt7t"]
+bg_color = Color(0.117647, 0.117647, 0.117647, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ilx0h"]
+bg_color = Color(0.176471, 0.176471, 0.176471, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_6vt7t"]
+size = Vector2(100, 100)
+orientation = 0
+
+[node name="PixelRenderer" type="Node3D"]
+script = ExtResource("1_5ibnk")
+
+[node name="Gizmo" type="Node3D" parent="."]
+
+[node name="Axis" type="MeshInstance3D" parent="Gizmo"]
+unique_name_in_owner = true
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("BoxMesh_6vt7t")
+surface_material_override/0 = ExtResource("2_6vt7t")
+
+[node name="MeshInstance3D5" type="MeshInstance3D" parent="Gizmo/Axis"]
+transform = Transform3D(1, -4.37114e-08, -4.37114e-08, -4.37114e-08, -4.37114e-08, -1, 4.37114e-08, 1, -4.37114e-08, 0, 0, 0)
+mesh = SubResource("BoxMesh_6vt7t")
+skeleton = NodePath("../..")
+surface_material_override/0 = ExtResource("2_6vt7t")
+
+[node name="MeshInstance3D6" type="MeshInstance3D" parent="Gizmo/Axis"]
+transform = Transform3D(-8.35187e-23, 1, -8.74228e-08, -1.91069e-15, -8.74228e-08, -1, -1, 0, 1.91069e-15, 0, 0, 0)
+mesh = SubResource("BoxMesh_6vt7t")
+skeleton = NodePath("../..")
+surface_material_override/0 = ExtResource("2_6vt7t")
+
+[node name="Origin" type="MeshInstance3D" parent="Gizmo"]
+unique_name_in_owner = true
+mesh = SubResource("SphereMesh_ilx0h")
+surface_material_override/0 = ExtResource("2_6vt7t")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Gizmo/Origin"]
+mesh = SubResource("BoxMesh_x1hdl")
+skeleton = NodePath("../..")
+surface_material_override/0 = ExtResource("2_6vt7t")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="Gizmo/Origin"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("BoxMesh_x1hdl")
+skeleton = NodePath("../..")
+surface_material_override/0 = ExtResource("2_6vt7t")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_wwtbg")
+
+[node name="KeyLight" type="DirectionalLight3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(0.5, -0.75, 0.433013, 0, 0.5, 0.866026, -0.866025, -0.433013, 0.25, 0, 0, 0)
+shadow_enabled = true
+
+[node name="FillLight" type="DirectionalLight3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(0.866025, -0.433013, -0.25, 0, 0.5, -0.866025, 0.5, 0.75, 0.433013, 0, 0, 0)
+light_energy = 0.2
+shadow_enabled = true
+
+[node name="RimLight" type="DirectionalLight3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(-0.931056, -0.182438, 0.315993, 0, 0.866025, 0.5, -0.364877, 0.465528, -0.806318, 0, 0, 0)
+light_energy = 100.0
+shadow_enabled = true
+
+[node name="FileDialog" type="FileDialog" parent="."]
+unique_name_in_owner = true
+position = Vector2i(0, 36)
+theme = ExtResource("2_l23g4")
+
+[node name="SubViewport" type="SubViewport" parent="."]
+unique_name_in_owner = true
+transparent_bg = true
+canvas_item_default_texture_filter = 0
+size = Vector2i(800, 800)
+
+[node name="Camera" type="Camera3D" parent="SubViewport"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 100)
+projection = 1
+size = 4.0
+
+[node name="SubViewport2" type="SubViewport" parent="."]
+transparent_bg = true
+
+[node name="Camera3D" type="Camera3D" parent="SubViewport2"]
+transform = Transform3D(0.599317, -0.566047, 0.566047, 0, 0.707107, 0.707107, -0.800512, -0.423781, 0.423781, 15.5528, 20, 11.5574)
+projection = 1
+size = 7.773
+
+[node name="MainUI" type="HBoxContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_l23g4")
+
+[node name="Spacer" type="Panel" parent="MainUI"]
+layout_mode = 2
+
+[node name="LeftPanel" type="VBoxContainer" parent="MainUI"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 10
+
+[node name="HBoxContainer9" type="HBoxContainer" parent="MainUI/LeftPanel"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="MainUI/LeftPanel/HBoxContainer9"]
+custom_minimum_size = Vector2(36, 36)
+layout_mode = 2
+texture = ExtResource("4_x1hdl")
+expand_mode = 2
+stretch_mode = 4
+
+[node name="TitleBar" type="VBoxContainer" parent="MainUI/LeftPanel/HBoxContainer9"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 0
+
+[node name="Label5" type="Label" parent="MainUI/LeftPanel/HBoxContainer9/TitleBar"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("StyleBoxFlat_5aq5t")
+text = "PIXEL RENDERER"
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="Label6" type="Label" parent="MainUI/LeftPanel/HBoxContainer9/TitleBar"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.396889, 0.396889, 0.396889, 1)
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_5aq5t")
+text = "3D to PixelArt toolkit by Bukkbeek"
+horizontal_alignment = 1
+uppercase = true
+
+[node name="HSeparator4" type="HSeparator" parent="MainUI/LeftPanel"]
+layout_mode = 2
+
+[node name="SceneLoaded" type="HBoxContainer" parent="MainUI/LeftPanel"]
+layout_mode = 2
+
+[node name="LoadSceneButton" type="Button" parent="MainUI/LeftPanel/SceneLoaded"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 36)
+layout_mode = 2
+text = "LOAD"
+icon = ExtResource("4_sen5r")
+expand_icon = true
+
+[node name="LoadScenePath" type="Label" parent="MainUI/LeftPanel/SceneLoaded"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.473976, 0.473976, 0.473976, 1)
+text = "://path-to-loaded-asset"
+clip_text = true
+
+[node name="HSeparator8" type="HSeparator" parent="MainUI/LeftPanel"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainUI/LeftPanel"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MainUI/LeftPanel/HBoxContainer"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_l23g4")
+text = "ANIMATION"
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="HBoxContainer7" type="HBoxContainer" parent="MainUI/LeftPanel"]
+layout_mode = 2
+
+[node name="AnimationSelector" type="OptionButton" parent="MainUI/LeftPanel/HBoxContainer7"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+clip_text = true
+fit_to_longest_item = false
+
+[node name="AnimPlayButton" type="Button" parent="MainUI/LeftPanel/HBoxContainer7"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(36, 36)
+layout_mode = 2
+icon = ExtResource("4_6wj3c")
+icon_alignment = 1
+expand_icon = true
+
+[node name="AnimPauseButton" type="Button" parent="MainUI/LeftPanel/HBoxContainer7"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(36, 36)
+layout_mode = 2
+icon = ExtResource("5_t0cwl")
+icon_alignment = 1
+expand_icon = true
+
+[node name="AnimStopButton" type="Button" parent="MainUI/LeftPanel/HBoxContainer7"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(36, 36)
+layout_mode = 2
+icon = ExtResource("6_l23g4")
+icon_alignment = 1
+expand_icon = true
+
+[node name="AnimLoopToggleButton" type="Button" parent="MainUI/LeftPanel/HBoxContainer7"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(36, 36)
+layout_mode = 2
+icon = ExtResource("7_wwtbg")
+icon_alignment = 1
+expand_icon = true
+
+[node name="AnimSlider" type="HSlider" parent="MainUI/LeftPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+tick_count = 10
+ticks_on_borders = true
+
+[node name="ExportOptions2" type="HBoxContainer" parent="MainUI/LeftPanel"]
+layout_mode = 2
+
+[node name="Label8" type="Label" parent="MainUI/LeftPanel/ExportOptions2"]
+layout_mode = 2
+text = " START:"
+
+[node name="StartSpin" type="SpinBox" parent="MainUI/LeftPanel/ExportOptions2"]
+unique_name_in_owner = true
+layout_mode = 2
+value = 1.0
+
+[node name="Label2" type="Label" parent="MainUI/LeftPanel/ExportOptions2"]
+layout_mode = 2
+text = " END:"
+
+[node name="EndSpin" type="SpinBox" parent="MainUI/LeftPanel/ExportOptions2"]
+unique_name_in_owner = true
+layout_mode = 2
+value = 30.0
+
+[node name="Label3" type="Label" parent="MainUI/LeftPanel/ExportOptions2"]
+layout_mode = 2
+text = " FPS:"
+
+[node name="FpsSpin" type="SpinBox" parent="MainUI/LeftPanel/ExportOptions2"]
+unique_name_in_owner = true
+layout_mode = 2
+max_value = 60.0
+value = 12.0
+
+[node name="FrameResetButton" type="Button" parent="MainUI/LeftPanel/ExportOptions2"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(36, 36)
+layout_mode = 2
+icon = ExtResource("9_ilx0h")
+expand_icon = true
+
+[node name="HSeparator9" type="HSeparator" parent="MainUI/LeftPanel"]
+layout_mode = 2
+
+[node name="Label4" type="Label" parent="MainUI/LeftPanel"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_l23g4")
+text = " OUTPUT "
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="ExportResolution" type="HBoxContainer" parent="MainUI/LeftPanel"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="MainUI/LeftPanel/ExportResolution"]
+custom_minimum_size = Vector2(36, 36)
+layout_mode = 2
+texture = ExtResource("8_t0cwl")
+expand_mode = 2
+stretch_mode = 4
+
+[node name="Resolution" type="SpinBox" parent="MainUI/LeftPanel/ExportResolution"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+value = 100.0
+allow_greater = true
+suffix = "px"
+
+[node name="Label2" type="Label" parent="MainUI/LeftPanel/ExportResolution"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="PrefixText" type="LineEdit" parent="MainUI/LeftPanel/ExportResolution"]
+unique_name_in_owner = true
+clip_contents = true
+custom_minimum_size = Vector2(186.53, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "prefix text"
+
+[node name="Label3" type="Label" parent="MainUI/LeftPanel/ExportResolution"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ExportButton" type="Button" parent="MainUI/LeftPanel/ExportResolution"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+text = "EXPORT"
+icon = ExtResource("9_l23g4")
+expand_icon = true
+
+[node name="ExportOptions4" type="HBoxContainer" parent="MainUI/LeftPanel"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="SelectFolderButton" type="Button" parent="MainUI/LeftPanel/ExportOptions4"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(188, 36)
+layout_mode = 2
+text = "EXPORT DIR"
+icon = ExtResource("4_sen5r")
+expand_icon = true
+
+[node name="ExportDirPath" type="Label" parent="MainUI/LeftPanel/ExportOptions4"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.473976, 0.473976, 0.473976, 1)
+text = "://path-to-export-dir"
+clip_text = true
+
+[node name="ProgressBar" type="ProgressBar" parent="MainUI/LeftPanel"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(240, 0)
+layout_mode = 2
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="MainUI/LeftPanel"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="MainUI/LeftPanel/HBoxContainer5"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="PreviewImageCheckBox" type="CheckButton" parent="MainUI/LeftPanel/HBoxContainer5"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "EXPORT PREVIEW "
+alignment = 2
+
+[node name="Label3" type="Label" parent="MainUI/LeftPanel/HBoxContainer5"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="BgColorCheckBox" type="CheckButton" parent="MainUI/LeftPanel/HBoxContainer5"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "BG COLOR "
+
+[node name="BgColorPicker" type="ColorPickerButton" parent="MainUI/LeftPanel/HBoxContainer5"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(36, 0)
+layout_mode = 2
+color = Color(1, 1, 1, 1)
+
+[node name="Label4" type="Label" parent="MainUI/LeftPanel/HBoxContainer5"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HSeparator3" type="HSeparator" parent="MainUI/LeftPanel"]
+layout_mode = 2
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MainUI/LeftPanel"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MainUI/LeftPanel/HBoxContainer3"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_l23g4")
+text = "ADJUSTMENTS"
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="PositionAdjust" type="HBoxContainer" parent="MainUI/LeftPanel"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Label7" type="Label" parent="MainUI/LeftPanel/PositionAdjust"]
+layout_mode = 2
+size_flags_horizontal = 3
+horizontal_alignment = 2
+
+[node name="TextureRect" type="TextureRect" parent="MainUI/LeftPanel/PositionAdjust"]
+custom_minimum_size = Vector2(36, 36)
+layout_mode = 2
+texture = ExtResource("8_6vt7t")
+expand_mode = 2
+stretch_mode = 4
+
+[node name="Label2" type="Label" parent="MainUI/LeftPanel/PositionAdjust"]
+layout_mode = 2
+text = "X:"
+
+[node name="XPosSpin" type="SpinBox" parent="MainUI/LeftPanel/PositionAdjust"]
+unique_name_in_owner = true
+layout_mode = 2
+step = 0.1
+allow_greater = true
+allow_lesser = true
+
+[node name="Label3" type="Label" parent="MainUI/LeftPanel/PositionAdjust"]
+layout_mode = 2
+text = "Y:"
+
+[node name="YPosSpin" type="SpinBox" parent="MainUI/LeftPanel/PositionAdjust"]
+unique_name_in_owner = true
+layout_mode = 2
+step = 0.1
+allow_greater = true
+allow_lesser = true
+
+[node name="Label4" type="Label" parent="MainUI/LeftPanel/PositionAdjust"]
+layout_mode = 2
+text = "Z:"
+
+[node name="ZPosSpin" type="SpinBox" parent="MainUI/LeftPanel/PositionAdjust"]
+unique_name_in_owner = true
+layout_mode = 2
+step = 0.1
+allow_greater = true
+allow_lesser = true
+
+[node name="Label8" type="Label" parent="MainUI/LeftPanel/PositionAdjust"]
+layout_mode = 2
+size_flags_horizontal = 3
+horizontal_alignment = 2
+
+[node name="PosResetButton" type="Button" parent="MainUI/LeftPanel/PositionAdjust"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(36, 36)
+layout_mode = 2
+icon = ExtResource("9_ilx0h")
+expand_icon = true
+
+[node name="RotationAdjust" type="HBoxContainer" parent="MainUI/LeftPanel"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Label5" type="Label" parent="MainUI/LeftPanel/RotationAdjust"]
+layout_mode = 2
+size_flags_horizontal = 3
+horizontal_alignment = 2
+
+[node name="TextureRect" type="TextureRect" parent="MainUI/LeftPanel/RotationAdjust"]
+custom_minimum_size = Vector2(36, 36)
+layout_mode = 2
+texture = ExtResource("10_x1hdl")
+expand_mode = 2
+stretch_mode = 4
+
+[node name="Label2" type="Label" parent="MainUI/LeftPanel/RotationAdjust"]
+layout_mode = 2
+text = "X:"
+
+[node name="XRotSpin" type="SpinBox" parent="MainUI/LeftPanel/RotationAdjust"]
+unique_name_in_owner = true
+layout_mode = 2
+step = 0.1
+allow_greater = true
+allow_lesser = true
+
+[node name="Label3" type="Label" parent="MainUI/LeftPanel/RotationAdjust"]
+layout_mode = 2
+text = "Y:"
+
+[node name="YRotSpin" type="SpinBox" parent="MainUI/LeftPanel/RotationAdjust"]
+unique_name_in_owner = true
+layout_mode = 2
+step = 0.1
+allow_greater = true
+allow_lesser = true
+
+[node name="Label4" type="Label" parent="MainUI/LeftPanel/RotationAdjust"]
+layout_mode = 2
+text = "Z:"
+
+[node name="ZRotSpin" type="SpinBox" parent="MainUI/LeftPanel/RotationAdjust"]
+unique_name_in_owner = true
+layout_mode = 2
+step = 0.1
+allow_greater = true
+allow_lesser = true
+
+[node name="Label6" type="Label" parent="MainUI/LeftPanel/RotationAdjust"]
+layout_mode = 2
+size_flags_horizontal = 3
+horizontal_alignment = 2
+
+[node name="RotResetButton" type="Button" parent="MainUI/LeftPanel/RotationAdjust"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(36, 36)
+layout_mode = 2
+icon = ExtResource("9_ilx0h")
+expand_icon = true
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MainUI/LeftPanel"]
+layout_mode = 2
+
+[node name="Label6" type="Label" parent="MainUI/LeftPanel/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+horizontal_alignment = 2
+
+[node name="Button_Up" type="Button" parent="MainUI/LeftPanel/HBoxContainer2"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(36, 36)
+layout_mode = 2
+icon = ExtResource("7_klpv1")
+icon_alignment = 1
+expand_icon = true
+
+[node name="Button_Down" type="Button" parent="MainUI/LeftPanel/HBoxContainer2"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(36, 36)
+layout_mode = 2
+icon = ExtResource("8_75uvr")
+icon_alignment = 1
+expand_icon = true
+
+[node name="Button_Left" type="Button" parent="MainUI/LeftPanel/HBoxContainer2"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(36, 36)
+layout_mode = 2
+icon = ExtResource("9_lbuph")
+icon_alignment = 1
+expand_icon = true
+
+[node name="Button_Right" type="Button" parent="MainUI/LeftPanel/HBoxContainer2"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(36, 36)
+layout_mode = 2
+icon = ExtResource("10_3lf5q")
+icon_alignment = 1
+expand_icon = true
+
+[node name="Label5" type="Label" parent="MainUI/LeftPanel/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+horizontal_alignment = 2
+
+[node name="TextureRect" type="TextureRect" parent="MainUI/LeftPanel/HBoxContainer2"]
+custom_minimum_size = Vector2(36, 36)
+layout_mode = 2
+texture = ExtResource("11_5xf31")
+expand_mode = 2
+stretch_mode = 4
+
+[node name="CameraZoomSpin" type="SpinBox" parent="MainUI/LeftPanel/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+step = 0.1
+value = 4.0
+allow_greater = true
+
+[node name="Label7" type="Label" parent="MainUI/LeftPanel/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+horizontal_alignment = 2
+
+[node name="ZoomResetButton" type="Button" parent="MainUI/LeftPanel/HBoxContainer2"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(36, 36)
+layout_mode = 2
+icon = ExtResource("9_ilx0h")
+expand_icon = true
+
+[node name="HSeparator5" type="HSeparator" parent="MainUI/LeftPanel"]
+layout_mode = 2
+
+[node name="Lighting" type="Label" parent="MainUI/LeftPanel"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_l23g4")
+text = " LIGHTING "
+horizontal_alignment = 1
+vertical_alignment = 2
+script = ExtResource("18_ilx0h")
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="MainUI/LeftPanel"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MainUI/LeftPanel/HBoxContainer4"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="KeyLightCheckButton" type="CheckButton" parent="MainUI/LeftPanel/HBoxContainer4"]
+unique_name_in_owner = true
+layout_mode = 2
+text = " KEY LIGHT"
+
+[node name="Label2" type="Label" parent="MainUI/LeftPanel/HBoxContainer4"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="KeyLightSpinBox" type="SpinBox" parent="MainUI/LeftPanel/HBoxContainer4"]
+unique_name_in_owner = true
+layout_mode = 2
+allow_greater = true
+
+[node name="Label5" type="Label" parent="MainUI/LeftPanel/HBoxContainer4"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="KeyLightColorPickerButton" type="ColorPickerButton" parent="MainUI/LeftPanel/HBoxContainer4"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(36, 36)
+layout_mode = 2
+
+[node name="Label4" type="Label" parent="MainUI/LeftPanel/HBoxContainer4"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TextureRect" type="TextureRect" parent="MainUI/LeftPanel/HBoxContainer4"]
+custom_minimum_size = Vector2(36, 36)
+layout_mode = 2
+texture = ExtResource("10_x1hdl")
+expand_mode = 2
+stretch_mode = 4
+
+[node name="KeyLightRotSpin" type="SpinBox" parent="MainUI/LeftPanel/HBoxContainer4"]
+unique_name_in_owner = true
+layout_mode = 2
+step = 0.1
+allow_greater = true
+allow_lesser = true
+
+[node name="Label3" type="Label" parent="MainUI/LeftPanel/HBoxContainer4"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="KeyLightResetButton" type="Button" parent="MainUI/LeftPanel/HBoxContainer4"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(36, 36)
+layout_mode = 2
+icon = ExtResource("9_ilx0h")
+expand_icon = true
+
+[node name="HBoxContainer6" type="HBoxContainer" parent="MainUI/LeftPanel"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MainUI/LeftPanel/HBoxContainer6"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="FillLightCheckButton" type="CheckButton" parent="MainUI/LeftPanel/HBoxContainer6"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "FILL LIGHT"
+
+[node name="Label2" type="Label" parent="MainUI/LeftPanel/HBoxContainer6"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="FillLightSpinBox" type="SpinBox" parent="MainUI/LeftPanel/HBoxContainer6"]
+unique_name_in_owner = true
+layout_mode = 2
+allow_greater = true
+
+[node name="Label5" type="Label" parent="MainUI/LeftPanel/HBoxContainer6"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="FillLightColorPickerButton" type="ColorPickerButton" parent="MainUI/LeftPanel/HBoxContainer6"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(36, 36)
+layout_mode = 2
+
+[node name="Label4" type="Label" parent="MainUI/LeftPanel/HBoxContainer6"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TextureRect" type="TextureRect" parent="MainUI/LeftPanel/HBoxContainer6"]
+custom_minimum_size = Vector2(36, 36)
+layout_mode = 2
+texture = ExtResource("10_x1hdl")
+expand_mode = 2
+stretch_mode = 4
+
+[node name="FillLightRotSpin" type="SpinBox" parent="MainUI/LeftPanel/HBoxContainer6"]
+unique_name_in_owner = true
+layout_mode = 2
+step = 0.1
+allow_greater = true
+allow_lesser = true
+
+[node name="Label3" type="Label" parent="MainUI/LeftPanel/HBoxContainer6"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="FillLightResetButton" type="Button" parent="MainUI/LeftPanel/HBoxContainer6"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(36, 36)
+layout_mode = 2
+icon = ExtResource("9_ilx0h")
+expand_icon = true
+
+[node name="HBoxContainer8" type="HBoxContainer" parent="MainUI/LeftPanel"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MainUI/LeftPanel/HBoxContainer8"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="RimLightCheckButton" type="CheckButton" parent="MainUI/LeftPanel/HBoxContainer8"]
+unique_name_in_owner = true
+layout_mode = 2
+text = " RIM LIGHT"
+
+[node name="Label2" type="Label" parent="MainUI/LeftPanel/HBoxContainer8"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="RimLightSpinBox" type="SpinBox" parent="MainUI/LeftPanel/HBoxContainer8"]
+unique_name_in_owner = true
+layout_mode = 2
+allow_greater = true
+
+[node name="Label5" type="Label" parent="MainUI/LeftPanel/HBoxContainer8"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="RimLightColorPickerButton" type="ColorPickerButton" parent="MainUI/LeftPanel/HBoxContainer8"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(36, 36)
+layout_mode = 2
+
+[node name="Label4" type="Label" parent="MainUI/LeftPanel/HBoxContainer8"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TextureRect" type="TextureRect" parent="MainUI/LeftPanel/HBoxContainer8"]
+custom_minimum_size = Vector2(36, 36)
+layout_mode = 2
+texture = ExtResource("10_x1hdl")
+expand_mode = 2
+stretch_mode = 4
+
+[node name="RimLightRotSpin" type="SpinBox" parent="MainUI/LeftPanel/HBoxContainer8"]
+unique_name_in_owner = true
+layout_mode = 2
+step = 0.1
+allow_greater = true
+allow_lesser = true
+
+[node name="Label3" type="Label" parent="MainUI/LeftPanel/HBoxContainer8"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="RimLightResetButton" type="Button" parent="MainUI/LeftPanel/HBoxContainer8"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(36, 36)
+layout_mode = 2
+icon = ExtResource("9_ilx0h")
+expand_icon = true
+
+[node name="HSeparator6" type="HSeparator" parent="MainUI/LeftPanel"]
+layout_mode = 2
+
+[node name="Gizmo" type="HBoxContainer" parent="MainUI/LeftPanel"]
+layout_mode = 2
+theme_override_constants/separation = 20
+script = ExtResource("19_ilx0h")
+
+[node name="Label7" type="Label" parent="MainUI/LeftPanel/Gizmo"]
+layout_mode = 2
+size_flags_horizontal = 3
+horizontal_alignment = 2
+
+[node name="Button_Axis" type="Button" parent="MainUI/LeftPanel/Gizmo"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 40)
+layout_mode = 2
+text = "AXIS"
+icon = ExtResource("14_ilx0h")
+expand_icon = true
+
+[node name="Button_Origin" type="Button" parent="MainUI/LeftPanel/Gizmo"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(140, 40)
+layout_mode = 2
+text = "ORIGIN"
+icon = ExtResource("15_x1hdl")
+expand_icon = true
+
+[node name="Button_Floor" type="Button" parent="MainUI/LeftPanel/Gizmo"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(125, 40)
+layout_mode = 2
+text = "FLOOR"
+icon = ExtResource("16_5xf31")
+expand_icon = true
+
+[node name="FloorColorPicker" type="ColorPickerButton" parent="MainUI/LeftPanel/Gizmo"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(36, 36)
+layout_mode = 2
+color = Color(1, 1, 1, 1)
+
+[node name="Label8" type="Label" parent="MainUI/LeftPanel/Gizmo"]
+layout_mode = 2
+size_flags_horizontal = 3
+horizontal_alignment = 2
+
+[node name="Renderer" type="VBoxContainer" parent="MainUI"]
+layout_mode = 2
+
+[node name="Renderer" type="PanelContainer" parent="MainUI/Renderer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_tkbio")
+
+[node name="ColorRect" type="ColorRect" parent="MainUI/Renderer/Renderer"]
+custom_minimum_size = Vector2(800, 800)
+layout_mode = 2
+color = Color(0.0911215, 0.0911214, 0.0911214, 1)
+
+[node name="BgColorRect" type="ColorRect" parent="MainUI/Renderer/Renderer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="PixelCanvas" type="TextureRect" parent="MainUI/Renderer/Renderer"]
+unique_name_in_owner = true
+texture_filter = 1
+material = ExtResource("3_v52r1")
+layout_mode = 2
+texture = SubResource("ViewportTexture_tkbio")
+metadata/_edit_lock_ = true
+
+[node name="CanvasSizeLabel" type="Label" parent="MainUI/Renderer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.479183, 0.479183, 0.479183, 1)
+theme_override_font_sizes/font_size = 16
+text = "Canvas size: 512 px"
+horizontal_alignment = 2
+
+[node name="Console" type="HBoxContainer" parent="MainUI/Renderer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 10
+
+[node name="Console" type="TextEdit" parent="MainUI/Renderer/Console"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 16
+editable = false
+context_menu_enabled = false
+emoji_menu_enabled = false
+shortcut_keys_enabled = false
+selecting_enabled = false
+deselect_on_focus_loss_enabled = false
+drag_and_drop_selection_enabled = false
+virtual_keyboard_enabled = false
+middle_mouse_paste_enabled = false
+empty_selection_clipboard_enabled = false
+wrap_mode = 1
+indent_wrapped_lines = true
+scroll_smooth = true
+
+[node name="UI_Controls" type="VBoxContainer" parent="MainUI"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="MainUI/UI_Controls"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_l23g4")
+text = "PRESET CONFIG"
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="PresetSelector" type="HBoxContainer" parent="MainUI/UI_Controls"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="PresetOptionButton" type="OptionButton" parent="MainUI/UI_Controls/PresetSelector"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+clip_text = true
+fit_to_longest_item = false
+
+[node name="SearchTextLineEdit" type="LineEdit" parent="MainUI/UI_Controls/PresetSelector"]
+unique_name_in_owner = true
+clip_contents = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+placeholder_text = "search "
+
+[node name="SavePresetButton" type="Button" parent="MainUI/UI_Controls/PresetSelector"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(36, 36)
+layout_mode = 2
+icon = ExtResource("22_6vt7t")
+expand_icon = true
+
+[node name="DeletePresetButton" type="Button" parent="MainUI/UI_Controls/PresetSelector"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(36, 36)
+layout_mode = 2
+icon = ExtResource("23_ilx0h")
+expand_icon = true
+
+[node name="HSeparator7" type="HSeparator" parent="MainUI/UI_Controls"]
+layout_mode = 2
+
+[node name="Label4" type="Label" parent="MainUI/UI_Controls"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_l23g4")
+text = "COLOR ADJUSTMENTS"
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="Panel" type="Panel" parent="MainUI/UI_Controls"]
+layout_mode = 2
+
+[node name="PixelAdjust1" type="HBoxContainer" parent="MainUI/UI_Controls"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="MainUI/UI_Controls/PixelAdjust1"]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+text = "Color steps:"
+horizontal_alignment = 2
+
+[node name="ColorStepsSpin" type="SpinBox" parent="MainUI/UI_Controls/PixelAdjust1"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+value = 8.0
+allow_greater = true
+
+[node name="Label2" type="Label" parent="MainUI/UI_Controls/PixelAdjust1"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ResetMaterialButton" type="Button" parent="MainUI/UI_Controls/PixelAdjust1"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(36, 36)
+layout_mode = 2
+icon = ExtResource("9_ilx0h")
+expand_icon = true
+
+[node name="PixelAdjust2" type="HBoxContainer" parent="MainUI/UI_Controls"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="MainUI/UI_Controls/PixelAdjust2"]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+text = "Edge strength:"
+horizontal_alignment = 2
+
+[node name="EdgeStrengthSlider" type="HSlider" parent="MainUI/UI_Controls/PixelAdjust2"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+max_value = 5.0
+step = 0.5
+
+[node name="PixelAdjust3" type="HBoxContainer" parent="MainUI/UI_Controls"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="MainUI/UI_Controls/PixelAdjust3"]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+text = "Sharpness:"
+horizontal_alignment = 2
+
+[node name="SharpnessSlider" type="HSlider" parent="MainUI/UI_Controls/PixelAdjust3"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+max_value = 5.0
+step = 0.1
+
+[node name="PixelAdjust4" type="HBoxContainer" parent="MainUI/UI_Controls"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="MainUI/UI_Controls/PixelAdjust4"]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+text = "Hue shift:"
+horizontal_alignment = 2
+
+[node name="HueShiftSlider" type="HSlider" parent="MainUI/UI_Controls/PixelAdjust4"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+min_value = -180.0
+max_value = 180.0
+
+[node name="PixelAdjust5" type="HBoxContainer" parent="MainUI/UI_Controls"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="MainUI/UI_Controls/PixelAdjust5"]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+text = "Saturation:"
+horizontal_alignment = 2
+
+[node name="SaturationSlider" type="HSlider" parent="MainUI/UI_Controls/PixelAdjust5"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+max_value = 2.0
+step = 0.1
+value = 1.0
+
+[node name="PixelAdjust6" type="HBoxContainer" parent="MainUI/UI_Controls"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="MainUI/UI_Controls/PixelAdjust6"]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+text = "Value:"
+horizontal_alignment = 2
+
+[node name="ValueSlider" type="HSlider" parent="MainUI/UI_Controls/PixelAdjust6"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+max_value = 2.0
+step = 0.1
+value = 1.0
+
+[node name="PixelAdjust7" type="HBoxContainer" parent="MainUI/UI_Controls"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="MainUI/UI_Controls/PixelAdjust7"]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+text = "Contrast:"
+horizontal_alignment = 2
+
+[node name="ContrastSlider" type="HSlider" parent="MainUI/UI_Controls/PixelAdjust7"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+max_value = 5.0
+step = 0.1
+value = 1.0
+
+[node name="PixelAdjust8" type="HBoxContainer" parent="MainUI/UI_Controls"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="MainUI/UI_Controls/PixelAdjust8"]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+text = "Gamma:"
+horizontal_alignment = 2
+
+[node name="GammaSlider" type="HSlider" parent="MainUI/UI_Controls/PixelAdjust8"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+max_value = 5.0
+step = 0.1
+value = 1.0
+
+[node name="PixelAdjust9" type="HBoxContainer" parent="MainUI/UI_Controls"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="MainUI/UI_Controls/PixelAdjust9"]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+text = "Brightness:"
+horizontal_alignment = 2
+
+[node name="BrightnessSlider" type="HSlider" parent="MainUI/UI_Controls/PixelAdjust9"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+min_value = -1.0
+max_value = 1.0
+step = 0.1
+
+[node name="PixelAdjust10" type="HBoxContainer" parent="MainUI/UI_Controls"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="MainUI/UI_Controls/PixelAdjust10"]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+text = "Outline:"
+horizontal_alignment = 2
+
+[node name="OutlineSpinBox" type="SpinBox" parent="MainUI/UI_Controls/PixelAdjust10"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="OutlineColorPicker" type="ColorPickerButton" parent="MainUI/UI_Controls/PixelAdjust10"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(36, 36)
+layout_mode = 2
+
+[node name="HSeparator10" type="HSeparator" parent="MainUI/UI_Controls"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="MainUI/UI_Controls"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_l23g4")
+text = "DITHERING"
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="PixelAdjust12" type="HBoxContainer" parent="MainUI/UI_Controls"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="MainUI/UI_Controls/PixelAdjust12"]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+text = "Amount:"
+horizontal_alignment = 2
+
+[node name="DitherAmountSlider" type="HSlider" parent="MainUI/UI_Controls/PixelAdjust12"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+step = 0.01
+
+[node name="PixelAdjust13" type="HBoxContainer" parent="MainUI/UI_Controls"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="MainUI/UI_Controls/PixelAdjust13"]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+text = "Blend:"
+horizontal_alignment = 2
+
+[node name="DitherBlendSlider" type="HSlider" parent="MainUI/UI_Controls/PixelAdjust13"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+step = 0.01
+
+[node name="PixelAdjust14" type="HBoxContainer" parent="MainUI/UI_Controls"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="MainUI/UI_Controls/PixelAdjust14"]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+text = "Threshold:"
+horizontal_alignment = 2
+
+[node name="DitherThresholdSlider" type="HSlider" parent="MainUI/UI_Controls/PixelAdjust14"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+step = 0.01
+
+[node name="PixelAdjust15" type="HBoxContainer" parent="MainUI/UI_Controls"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="MainUI/UI_Controls/PixelAdjust15"]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+text = "Sensitivity:"
+horizontal_alignment = 2
+
+[node name="DitherSensitivitySlider" type="HSlider" parent="MainUI/UI_Controls/PixelAdjust15"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="PixelAdjust16" type="HBoxContainer" parent="MainUI/UI_Controls"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="MainUI/UI_Controls/PixelAdjust16"]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+text = "Dot size"
+horizontal_alignment = 2
+
+[node name="DitherDotSizeSpin" type="SpinBox" parent="MainUI/UI_Controls/PixelAdjust16"]
+unique_name_in_owner = true
+layout_mode = 2
+step = 0.1
+value = 1.0
+
+[node name="DitherDotColor" type="ColorPickerButton" parent="MainUI/UI_Controls/PixelAdjust16"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(36, 36)
+layout_mode = 2
+
+[node name="HSeparator9" type="HSeparator" parent="MainUI/UI_Controls"]
+layout_mode = 2
+
+[node name="Panel2" type="Panel" parent="MainUI/UI_Controls"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_x1hdl")
+
+[node name="TextureRect" type="TextureRect" parent="MainUI/UI_Controls/Panel2"]
+clip_contents = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 3
+texture = SubResource("ViewportTexture_6vt7t")
+expand_mode = 1
+stretch_mode = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainUI"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="MainUI/VBoxContainer"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_l23g4")
+text = "COLORS"
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="UsePaletteCheckButton" type="CheckButton" parent="MainUI/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 36)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+theme_override_styles/pressed = SubResource("StyleBoxFlat_6vt7t")
+theme_override_styles/normal = SubResource("StyleBoxFlat_ilx0h")
+text = " REMAP"
+alignment = 1
+
+[node name="ColorPresetOptionButton" type="OptionButton" parent="MainUI/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+clip_text = true
+fit_to_longest_item = false
+
+[node name="UsePaletteColor1" type="ColorPickerButton" parent="MainUI/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="UsePaletteColor2" type="ColorPickerButton" parent="MainUI/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="UsePaletteColor3" type="ColorPickerButton" parent="MainUI/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="UsePaletteColor4" type="ColorPickerButton" parent="MainUI/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="UsePaletteColor5" type="ColorPickerButton" parent="MainUI/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="UsePaletteColor6" type="ColorPickerButton" parent="MainUI/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="UsePaletteColor7" type="ColorPickerButton" parent="MainUI/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="UsePaletteColor8" type="ColorPickerButton" parent="MainUI/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="SampleColorsButton" type="Button" parent="MainUI/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "SAMPLE"
+
+[node name="Panel" type="Panel" parent="MainUI"]
+layout_mode = 2
+
+[node name="ModelsHandler" type="Node3D" parent="."]
+script = ExtResource("11_8egxh")
+
+[node name="ModelsSpawner" type="Node3D" parent="ModelsHandler"]
+unique_name_in_owner = true
+script = ExtResource("22_t0cwl")
+
+[node name="TempModel" type="Node3D" parent="ModelsHandler/ModelsSpawner"]
+unique_name_in_owner = true
+
+[node name="Skeleton_Minion" parent="ModelsHandler/ModelsSpawner/TempModel" instance=ExtResource("27_wwtbg")]
+
+[node name="Skeleton3D" parent="ModelsHandler/ModelsSpawner/TempModel/Skeleton_Minion/Rig" index="0"]
+bones/1/position = Vector3(0, 0.392064, 0)
+bones/1/rotation = Quaternion(-1.11123e-10, 0.0431578, 2.57241e-09, 0.999068)
+bones/2/rotation = Quaternion(-6.93889e-18, 7.10543e-15, 4.93038e-32, 1)
+bones/3/rotation = Quaternion(8.27181e-25, 3.72529e-09, -2.75506e-40, 1)
+bones/3/scale = Vector3(1, 1, 1)
+bones/4/position = Vector3(0.212007, 0.134132, 7.92996e-08)
+bones/4/rotation = Quaternion(-0.559906, -0.0608803, -0.643974, 0.517779)
+bones/4/scale = Vector3(0.999999, 0.999999, 1)
+bones/5/rotation = Quaternion(3.65498e-08, -4.88301e-08, -0.494719, 0.869053)
+bones/5/scale = Vector3(1, 0.999999, 1)
+bones/6/rotation = Quaternion(1.44633e-08, 1.26672e-08, 0.0266581, 0.999645)
+bones/6/scale = Vector3(1, 1, 1)
+bones/7/rotation = Quaternion(-0.321065, -0.325319, 0.145726, 0.87741)
+bones/7/scale = Vector3(1, 1, 1)
+bones/8/position = Vector3(8.34843e-10, 0.0961252, -0.0575)
+bones/8/rotation = Quaternion(-3.6586e-09, 6.87811e-09, -0.707107, 0.707107)
+bones/8/scale = Vector3(1, 1, 1)
+bones/9/position = Vector3(-0.212007, 0.134132, 8.6814e-08)
+bones/9/rotation = Quaternion(-0.618244, 0.0807287, 0.618012, 0.478873)
+bones/9/scale = Vector3(0.999999, 0.999999, 1)
+bones/10/rotation = Quaternion(2.09853e-08, 5.12855e-08, 0.517939, 0.855417)
+bones/10/scale = Vector3(1, 1, 1)
+bones/11/rotation = Quaternion(-4.94615e-10, -1.45974e-08, -0.0266581, 0.999645)
+bones/11/scale = Vector3(1, 1, 1)
+bones/12/rotation = Quaternion(-0.319291, 0.300524, -0.22735, 0.869512)
+bones/12/scale = Vector3(1, 1, 1)
+bones/13/position = Vector3(-1.5736e-08, 0.0961251, -0.0575)
+bones/13/rotation = Quaternion(-1.02444e-09, -4.24391e-09, 0.707107, 0.707107)
+bones/13/scale = Vector3(1, 1, 1)
+bones/14/rotation = Quaternion(-5.80608e-11, -0.0313417, -1.88012e-09, 0.999509)
+bones/15/position = Vector3(0.170945, 0.113587, 1.59941e-08)
+bones/15/rotation = Quaternion(0.996185, 0.0479136, 0.0566427, -0.045939)
+bones/15/scale = Vector3(1, 1, 1)
+bones/16/rotation = Quaternion(0.165014, 6.49414e-08, -1.11407e-07, 0.986291)
+bones/16/scale = Vector3(1, 1, 1)
+bones/17/rotation = Quaternion(-0.533729, -0.260895, -1.72985e-05, 0.804405)
+bones/17/scale = Vector3(1, 1, 0.999999)
+bones/18/rotation = Quaternion(0.000263472, 0.920216, -0.391412, -5.96391e-05)
+bones/18/scale = Vector3(1, 0.999997, 1)
+bones/19/position = Vector3(-0.170945, 0.113587, 1.55755e-08)
+bones/19/rotation = Quaternion(0.997322, -0.0294574, 0.0315293, 0.0590483)
+bones/19/scale = Vector3(1, 1, 1)
+bones/20/rotation = Quaternion(0.274008, -6.38135e-08, 1.92761e-07, 0.961727)
+bones/20/scale = Vector3(1, 1, 1)
+bones/21/rotation = Quaternion(-0.559039, 0.114513, -0.00862763, 0.82115)
+bones/21/scale = Vector3(1, 1, 0.999999)
+bones/22/rotation = Quaternion(-8.93489e-05, 0.920222, -0.391398, 2.0291e-05)
+bones/22/scale = Vector3(1, 0.999998, 1)
+bones/23/rotation = Quaternion(0.707107, -2.29302e-07, -4.60552e-08, 0.707107)
+bones/24/position = Vector3(0.213918, 0.0259903, 0.173866)
+bones/24/rotation = Quaternion(-0.705092, 0.0533355, 0.0533355, 0.705092)
+bones/25/rotation = Quaternion(9.65792e-09, 1.77955e-09, 0.985719, -0.168398)
+bones/26/position = Vector3(-1.11482e-08, 0.213436, -5.36347e-09)
+bones/26/rotation = Quaternion(-1.10961e-07, 0.391084, 0.920355, -2.67919e-08)
+bones/26/scale = Vector3(1, 1, 1)
+bones/27/position = Vector3(-6.31128e-09, 0.16565, -7.10267e-09)
+bones/27/scale = Vector3(1, 1, 1)
+bones/28/rotation = Quaternion(1, -8.27364e-11, 1.94627e-07, -7.45058e-09)
+bones/28/scale = Vector3(1, 1, 1)
+bones/29/rotation = Quaternion(5.55113e-17, -6.74098e-17, -1.94669e-08, 1)
+bones/30/rotation = Quaternion(0.707107, -3.82385e-08, 1.45009e-07, 0.707107)
+bones/31/rotation = Quaternion(-0.707107, -7.05285e-08, -7.05285e-08, 0.707107)
+bones/32/rotation = Quaternion(-5.83589e-09, 6.43837e-10, 0.994809, 0.101756)
+bones/33/position = Vector3(-1.11482e-08, 0.213436, -2.50942e-15)
+bones/33/rotation = Quaternion(-1.05796e-07, 0.391084, 0.920355, -2.58643e-08)
+bones/33/scale = Vector3(1, 1, 1)
+bones/34/position = Vector3(-6.31128e-09, 0.16565, 2.70695e-09)
+bones/34/rotation = Quaternion(-0.391084, -6.73931e-08, -6.22002e-08, 0.920355)
+bones/34/scale = Vector3(1, 1, 1)
+bones/35/rotation = Quaternion(1, 3.76526e-09, 1.94879e-07, 7.45058e-09)
+bones/35/scale = Vector3(1, 1, 1)
+bones/36/rotation = Quaternion(1.00614e-16, -6.74098e-17, -1.57416e-08, 1)
+bones/36/scale = Vector3(1, 1, 1)
+bones/37/rotation = Quaternion(-0.707107, -7.27951e-08, -7.27951e-08, 0.707107)
+bones/38/position = Vector3(0.520841, 0.788312, -0.0576373)
+bones/38/rotation = Quaternion(0.794627, -1.11759e-07, 0.607098, -5.96046e-08)
+bones/39/rotation = Quaternion(-0.707107, -7.27951e-08, -7.27951e-08, 0.707107)
+bones/40/position = Vector3(-0.510844, 0.788312, 0.0597369)
+bones/40/rotation = Quaternion(-0.758253, -1.52737e-07, 0.651961, -1.11759e-08)
+
+[node name="AnimationPlayer" parent="ModelsHandler/ModelsSpawner/TempModel/Skeleton_Minion" index="1"]
+autoplay = "Idle"
+
+[node name="Grid" type="MeshInstance3D" parent="ModelsHandler/ModelsSpawner"]
+unique_name_in_owner = true
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("PlaneMesh_6vt7t")
+skeleton = NodePath("../../../Gizmo")
+surface_material_override/0 = ExtResource("2_6vt7t")
+
+[node name="PixelMaterial" type="Node" parent="."]
+script = ExtResource("16_yc5xn")
+
+[editable path="ModelsHandler/ModelsSpawner/TempModel/Skeleton_Minion"]

@@ -1,0 +1,33 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://bmhdt60ax1int"]
+
+[ext_resource type="Shader" uid="uid://dtmmhsktnp0fw" path="res://PixelRenderer/data/PixelArt.gdshader" id="1_f33dq"]
+
+[resource]
+shader = ExtResource("1_f33dq")
+shader_parameter/target_pixel_count = 256
+shader_parameter/color_steps = 8
+shader_parameter/edge_strength = 0.5
+shader_parameter/sharpness = 1.0
+shader_parameter/hue_shift = 0.0
+shader_parameter/saturation = 1.0
+shader_parameter/value_brightness = 1.0
+shader_parameter/contrast = 1.0
+shader_parameter/gamma = 1.0
+shader_parameter/brightness = 0.0
+shader_parameter/outline_thickness = 0.0
+shader_parameter/outline_color = Color(0, 0, 0, 1)
+shader_parameter/dither_amount = 0.5
+shader_parameter/dither_blend = 1.0
+shader_parameter/dither_threshold = 0.5
+shader_parameter/shadow_sensitivity = 1.0
+shader_parameter/dot_size = 1.0
+shader_parameter/dither_color = Color(0, 0, 0, 1)
+shader_parameter/use_palette = true
+shader_parameter/palette_color_1 = Color(0.051, 0.169, 0.271, 1)
+shader_parameter/palette_color_2 = Color(0.125, 0.235, 0.337, 1)
+shader_parameter/palette_color_3 = Color(0.329, 0.306, 0.408, 1)
+shader_parameter/palette_color_4 = Color(0.553, 0.412, 0.478, 1)
+shader_parameter/palette_color_5 = Color(0.816, 0.506, 0.349, 1)
+shader_parameter/palette_color_6 = Color(1, 0.667, 0.369, 1)
+shader_parameter/palette_color_7 = Color(1, 0.831, 0.639, 1)
+shader_parameter/palette_color_8 = Color(1, 0.925, 0.839, 1)
