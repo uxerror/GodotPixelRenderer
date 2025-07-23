@@ -137,65 +137,65 @@ float get_bayer_matrix(ivec2 pos) {
         3,  11, 1,  9,
         15, 7,  13, 5
     );
-    
+
     int x = pos.x % 4;
     int y = pos.y % 4;
     int index = y * 4 + x;
-    
+
     return float(bayer[index]) / 15.0;
 }
 
 vec3 detect_shadow_transitions(sampler2D tex, vec2 uv, vec2 tex_size) {
     vec2 texel = 1.0 / tex_size;
-    
+
     // Sample surrounding pixels
     vec3 center = texture(tex, uv).rgb;
     vec3 right = texture(tex, uv + vec2(texel.x, 0.0)).rgb;
     vec3 down = texture(tex, uv + vec2(0.0, texel.y)).rgb;
     vec3 left = texture(tex, uv + vec2(-texel.x, 0.0)).rgb;
     vec3 up = texture(tex, uv + vec2(0.0, -texel.y)).rgb;
-    
+
     // Calculate luminance for each sample
     float lum_center = dot(center, vec3(0.299, 0.587, 0.114));
     float lum_right = dot(right, vec3(0.299, 0.587, 0.114));
     float lum_down = dot(down, vec3(0.299, 0.587, 0.114));
     float lum_left = dot(left, vec3(0.299, 0.587, 0.114));
     float lum_up = dot(up, vec3(0.299, 0.587, 0.114));
-    
+
     // Calculate gradient magnitude (how much luminance changes)
     float grad_x = abs(lum_right - lum_left) * 0.5;
     float grad_y = abs(lum_down - lum_up) * 0.5;
     float gradient = sqrt(grad_x * grad_x + grad_y * grad_y);
-    
+
     return vec3(gradient, lum_center, 0.0);
 }
 
 vec3 apply_dithering(vec3 color, vec2 screen_pos, sampler2D tex, vec2 uv, vec2 tex_size) {
     if (dither_amount <= 0.0) return color;
-    
+
     // Detect shadow/light transitions
     vec3 transition_data = detect_shadow_transitions(tex, uv, tex_size);
     float gradient_strength = transition_data.x;
     float luminance = transition_data.y;
-    
+
     // Only apply dithering in transition areas
     float transition_factor = smoothstep(0.05, 0.2, gradient_strength * shadow_sensitivity);
     if (transition_factor < 0.01) return color;
-    
+
     // Get Bayer matrix value for current pixel
     ivec2 pixel_pos = ivec2(floor(screen_pos * dot_size));
     float bayer_value = get_bayer_matrix(pixel_pos);
-    
+
     // Create threshold based on luminance and user control
     float threshold = dither_threshold + (bayer_value - 0.5) * dither_amount;
-    
+
     // Determine if this pixel should be a dot
     float is_dot = step(threshold, luminance);
-    
+
     // Create darker dots in shadow areas, lighter in bright areas
     vec3 dot_color = mix(dither_color.rgb, color * 1.2, luminance);
     vec3 dithered = mix(dot_color, color, is_dot);
-    
+
     // Blend based on transition strength and user blend control
     float final_blend = transition_factor * dither_blend;
     return mix(color, dithered, final_blend);
@@ -206,7 +206,7 @@ void fragment() {
 
     // Apply pixelation
     vec2 pixel_uv = UV;
-    
+
     if (target_pixel_count < int(texture_size.x)) {
         // Calculate how many source pixels map to one target pixel
         float scale_factor = texture_size.x / float(target_pixel_count);

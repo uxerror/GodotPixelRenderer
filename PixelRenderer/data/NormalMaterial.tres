@@ -1,0 +1,9 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://ck8lglovrtxoh"]
+
+[ext_resource type="Shader" uid="uid://dngf4tdv8ink7" path="res://PixelRenderer/data/NormalMaterial.gdshader" id="1_x0n5m"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_x0n5m")
+shader_parameter/WorldSpace = true
+shader_parameter/RemapRange = true
