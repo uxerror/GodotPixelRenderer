@@ -49,6 +49,13 @@ var cached_texture: ImageTexture
 # Base canvas size - always 800x800
 const BASE_CANVAS_SIZE: int = 800
 
+# Animation export variables
+var animation_player: AnimationPlayer = null
+var was_playing_before_export: bool = false
+var original_animation_position: float = 0.0
+var export_frame_list: Array = []
+var export_frame_index: int = 0
+
 func _ready():
 	# Initialize console
 	_update_progress("EffectBlocks PixelRenderer")
@@ -144,18 +151,80 @@ func _on_directory_selected(dir: String):
 	# Update the label to show the selected path
 	_update_export_path_label()
 
+func _find_animation_player(node: Node) -> AnimationPlayer:
+	# Check if current node is an AnimationPlayer
+	if node is AnimationPlayer:
+		return node as AnimationPlayer
+	
+	# Recursively search children
+	for child in node.get_children():
+		var result = _find_animation_player(child)
+		if result != null:
+			return result
+	
+	return null
+
 func _start_export():
 	if export_directory == "":
 		_update_progress("No export directory selected")
 		return
 		
-	if start_frame >= end_frame:
+	# Get frame range from models_spawner UI instead of hardcoded values
+	var actual_start_frame = start_frame
+	var actual_end_frame = end_frame
+	
+	if models_spawner:
+		# Try to get the frame values from models_spawner directly (it has start_spin and end_spin as @onready vars)
+		if models_spawner.has_method("get") and models_spawner.get("start_spin") != null and models_spawner.get("end_spin") != null:
+			actual_start_frame = int(models_spawner.start_spin.value)
+			actual_end_frame = int(models_spawner.end_spin.value)
+			_update_progress("Using frame range from UI: " + str(actual_start_frame) + " to " + str(actual_end_frame))
+		else:
+			_update_progress("Could not access frame range UI controls, using default values")
+	
+	if actual_start_frame >= actual_end_frame:
 		_update_progress("Invalid frame range: start_frame must be less than end_frame")
 		return
-		
+	
+	# Calculate frame skip based on FPS (baseline 30 FPS)
+	var frame_skip = int(30.0 / float(fps))
+	if frame_skip < 1:
+		frame_skip = 1
+	
+	_update_progress("Export FPS: " + str(fps) + " (will render every " + str(frame_skip) + " frame(s) from 30 FPS baseline)")
+	
+	# Find the animation player in the loaded model
+	if models_spawner:
+		var loaded_model = models_spawner.get_loaded_model()
+		if loaded_model:
+			animation_player = _find_animation_player(loaded_model)
+			if animation_player:
+				_update_progress("Found AnimationPlayer - animation will play during export")
+				# Store current state
+				was_playing_before_export = animation_player.is_playing()
+				original_animation_position = animation_player.current_animation_position
+				
+				# Ensure animation is playing
+				if not animation_player.is_playing():
+					animation_player.play()
+					_update_progress("Started animation playback for export")
+			else:
+				_update_progress("No AnimationPlayer found - exporting static frames")
+		else:
+			_update_progress("No model loaded - exporting static frames")
+	
 	is_exporting = true
-	current_export_frame = start_frame
-	total_frames = end_frame - start_frame + 1
+	current_export_frame = actual_start_frame
+	start_frame = actual_start_frame  # Update the instance variables
+	end_frame = actual_end_frame
+	
+	# Calculate total frames that will actually be exported (considering frame skipping)
+	var frames_to_export = []
+	for frame_num in range(start_frame, end_frame + 1):
+		if (frame_num - start_frame) % frame_skip == 0:
+			frames_to_export.append(frame_num)
+	
+	total_frames = frames_to_export.size()
 	
 	export_button.text = "Exporting..."
 	export_button.disabled = true
@@ -164,22 +233,47 @@ func _start_export():
 	progress_bar.value = 0
 	
 	_update_progress("Starting export from frame " + str(start_frame) + " to " + str(end_frame))
+	_update_progress("Total frames to export: " + str(total_frames) + " at " + str(fps) + " FPS (skipping " + str(frame_skip - 1) + " frames between renders)")
+	_update_progress("Frames to render: " + str(frames_to_export))
+	
+	# Store the frames list and start with the first frame
+	export_frame_list = frames_to_export
+	export_frame_index = 0
 	
 	# Start the export process
 	_export_next_frame()
 
 func _export_next_frame():
-	if current_export_frame > end_frame:
+	if export_frame_index >= export_frame_list.size():
 		_finish_export()
 		return
 	
+	# Get the actual frame number to render
+	var frame_to_render = export_frame_list[export_frame_index]
+	
 	# Update progress bar
-	var progress_percent = float(current_export_frame - start_frame) / float(total_frames) * 100.0
+	var progress_percent = float(export_frame_index) / float(total_frames) * 100.0
 	progress_bar.value = progress_percent
 	
-	_update_progress("Processing frame " + str(current_export_frame) + " (" + str(current_export_frame - start_frame + 1) + "/" + str(total_frames) + ")")
+	_update_progress("Processing frame " + str(frame_to_render) + " (" + str(export_frame_index + 1) + "/" + str(total_frames) + ")")
 	
-	# Wait for next frame to ensure proper rendering
+	# If we have an animation player, seek to the correct frame position
+	if animation_player and animation_player.current_animation != "":
+		# Animation timing always uses 30 FPS baseline
+		var target_time = float(frame_to_render) / 30.0
+		
+		# Make sure we don't exceed animation length
+		var animation_length = animation_player.current_animation_length
+		if target_time > animation_length:
+			target_time = animation_length
+		
+		# Seek to the exact frame position
+		animation_player.seek(target_time)
+		_update_progress("Animation seeked to time: " + str(target_time) + "s (frame " + str(frame_to_render) + " at 30 FPS baseline)")
+	
+	# Wait for multiple frames to ensure proper rendering and animation update
+	await get_tree().process_frame
+	await get_tree().process_frame
 	await get_tree().process_frame
 	
 	# Capture the entire Renderer control node and its contents
@@ -195,7 +289,8 @@ func _export_next_frame():
 		if prefix.is_empty():
 			prefix = "frame"
 		
-		var filename = "%s_%04d.png" % [prefix, current_export_frame]
+		# Use actual frame numbers for exported files (Blender style)
+		var filename = "%s_%04d.png" % [prefix, frame_to_render]
 		var filepath = export_directory.path_join(filename)
 		
 		_update_progress("Saving frame to: " + filepath)
@@ -203,18 +298,18 @@ func _export_next_frame():
 		# Save the image
 		var error = image.save_png(filepath)
 		if error != OK:
-			_update_progress("ERROR: Failed to save frame " + str(current_export_frame) + " - Error code: " + str(error))
+			_update_progress("ERROR: Failed to save frame " + str(frame_to_render) + " - Error code: " + str(error))
 		else:
 			var size_info = ""
 			if preview_image_check_box.button_pressed:
 				size_info = " (preview size: " + str(image.get_width()) + "x" + str(image.get_height()) + ")"
 			else:
 				size_info = " (scaled to: " + str(image.get_width()) + "x" + str(image.get_height()) + ")"
-			_update_progress("✓ Exported frame " + str(current_export_frame) + " (" + str(current_export_frame - start_frame + 1) + "/" + str(total_frames) + ")" + size_info)
+			_update_progress("✓ Exported frame " + str(frame_to_render) + " as " + filename + " (" + str(export_frame_index + 1) + "/" + str(total_frames) + ")" + size_info)
 	else:
-		_update_progress("ERROR: Failed to capture frame " + str(current_export_frame))
+		_update_progress("ERROR: Failed to capture frame " + str(frame_to_render))
 	
-	current_export_frame += 1
+	export_frame_index += 1
 	
 	# Continue with next frame
 	_export_next_frame()
@@ -333,6 +428,20 @@ func _finish_export():
 	export_button.text = "Export"
 	export_button.disabled = false
 	
+	# Restore animation player state
+	if animation_player:
+		if was_playing_before_export:
+			# Restore to original position and continue playing
+			animation_player.seek(original_animation_position)
+			if not animation_player.is_playing():
+				animation_player.play()
+			_update_progress("Animation restored to original state")
+		else:
+			# Stop animation if it wasn't playing before
+			animation_player.stop()
+			animation_player.seek(original_animation_position)
+			_update_progress("Animation stopped and restored to original position")
+	
 	# Complete the progress bar
 	progress_bar.value = 100
 	
@@ -341,6 +450,8 @@ func _finish_export():
 	_update_progress("Total frames exported: " + str(total_frames))
 	_update_progress("Export location: " + export_directory)
 	_update_progress("Frame rate: " + str(fps) + " FPS")
+	if animation_player:
+		_update_progress("Animation was synchronized during export")
 	_update_progress("------------------------------")
 	
 	# Optional: Show a completion message
@@ -416,5 +527,5 @@ func _update_bg_color_visibility():
 	bg_color_rect.visible = should_be_visible
 
 
-func _on_normal_button_toggled(button_pressed : bool):
-	pass
+func _on_normal_button_toggled(_button_pressed : bool):
+	_update_progress("Rendering Normal Maps")

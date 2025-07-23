@@ -158,12 +158,21 @@ transform = Transform3D(0.599317, -0.566047, 0.566047, 0, 0.707107, 0.707107, -0
 projection = 1
 size = 7.773
 
+[node name="ViewportBackgroundColorRect" type="ColorRect" parent="."]
+custom_minimum_size = Vector2(800, 800)
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -400.0
+offset_right = 400.0
+offset_bottom = 800.0
+grow_horizontal = 2
+color = Color(0.0911215, 0.0911214, 0.0911214, 1)
+
 [node name="MainUI" type="HBoxContainer" parent="."]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -30.0
-offset_bottom = 4.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("2_l23g4")
@@ -414,14 +423,11 @@ layout_mode = 2
 [node name="HBoxContainer5" type="HBoxContainer" parent="MainUI/LeftPanel"]
 layout_mode = 2
 
-[node name="Label2" type="Label" parent="MainUI/LeftPanel/HBoxContainer5"]
-layout_mode = 2
-size_flags_horizontal = 3
-
 [node name="PreviewImageCheckBox" type="CheckButton" parent="MainUI/LeftPanel/HBoxContainer5"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "EXPORT PREVIEW "
+tooltip_text = "Export preview (Hi-res)"
+text = " PREVIEW "
 alignment = 2
 
 [node name="Label5" type="Label" parent="MainUI/LeftPanel/HBoxContainer5"]
@@ -431,7 +437,8 @@ size_flags_horizontal = 3
 [node name="BgColorCheckBox" type="CheckButton" parent="MainUI/LeftPanel/HBoxContainer5"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "BG COLOR "
+tooltip_text = "Set Background Color"
+text = "BG "
 
 [node name="BgColorPicker" type="ColorPickerButton" parent="MainUI/LeftPanel/HBoxContainer5"]
 unique_name_in_owner = true
@@ -443,22 +450,12 @@ color = Color(1, 1, 1, 1)
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="HBoxContainer10" type="HBoxContainer" parent="MainUI/LeftPanel"]
-layout_mode = 2
-
-[node name="Label2" type="Label" parent="MainUI/LeftPanel/HBoxContainer10"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="NormalMapCheckBox" type="CheckButton" parent="MainUI/LeftPanel/HBoxContainer10"]
+[node name="NormalMapCheckBox" type="CheckButton" parent="MainUI/LeftPanel/HBoxContainer5"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "NORMAL MAP"
+tooltip_text = "Export Normal Map"
+text = "NORMALS"
 alignment = 2
-
-[node name="Label5" type="Label" parent="MainUI/LeftPanel/HBoxContainer10"]
-layout_mode = 2
-size_flags_horizontal = 3
 
 [node name="HSeparator3" type="HSeparator" parent="MainUI/LeftPanel"]
 layout_mode = 2
@@ -912,11 +909,6 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_tkbio")
-
-[node name="ColorRect" type="ColorRect" parent="MainUI/Renderer/Renderer"]
-custom_minimum_size = Vector2(800, 800)
-layout_mode = 2
-color = Color(0.0911215, 0.0911214, 0.0911214, 1)
 
 [node name="BgColorRect" type="ColorRect" parent="MainUI/Renderer/Renderer"]
 unique_name_in_owner = true
