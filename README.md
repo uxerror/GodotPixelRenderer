@@ -55,6 +55,12 @@ Created by **[bukkbeek](https://bukkbeek.github.io/)** - an independent game dev
 - **Preset configurations** and console logging for detailed feedback
 - **Export management** with custom paths, filename prefixes, and batch capabilities
 
+<!-- Example Output GIFs -->
+<div align="center" style="display: flex; gap: 16px; justify-content: center;">
+  <img src="Sample/minion_albedo.gif" alt="Minion Albedo" style="width: 40%; object-fit: contain;"/>
+  <img src="Sample/minion_normals.gif" alt="Minion Normals" style="width: 40%; object-fit: contain;"/>
+</div>
+
 ## 🚀 Quick Start
 
 ### Requirements
