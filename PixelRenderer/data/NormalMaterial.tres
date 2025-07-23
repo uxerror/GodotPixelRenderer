@@ -6,4 +6,4 @@
 render_priority = 0
 shader = ExtResource("1_x0n5m")
 shader_parameter/WorldSpace = true
-shader_parameter/RemapRange = false
+shader_parameter/RemapRange = true
