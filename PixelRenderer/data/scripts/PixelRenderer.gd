@@ -63,6 +63,7 @@ func _ready():
 	_update_progress("PixelRenderer initialized successfully")
 	_update_progress("Canvas update timer set to " + str(fps) + " FPS")
 	_update_progress("Base canvas size: " + str(BASE_CANVAS_SIZE) + "x" + str(BASE_CANVAS_SIZE))
+	_update_progress("Default minion skeleton by KayKit: kaylousberg.itch.io/kaykit-skeletons")
 
 	# Keep SubViewport updating continuously so models run at normal speed
 	sub_viewport.render_target_update_mode = SubViewport.UPDATE_ALWAYS

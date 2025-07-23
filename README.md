@@ -1,14 +1,19 @@
-# Godot Pixel Studio
+# Godot Pixel Renderer
+### (Known as: Godot Pixel Studio)
 
 <div align="center">
   <img src="PixelRenderer.png" alt="Pixel Renderer" width="256" height="256">
 </div>
 
-A powerful **3D-to-Pixel Art Renderer** built with Godot 4.4+ that transforms 3D models and animations into retro-style pixel art with customizable effects and frame-by-frame animation export capabilities.
+A powerful **3D to Pixel Art Renderer** built with Godot 4.4+ that transforms 3D models and animations into retro-style pixel art with customizable effects and frame by frame animation export capabilities.
 
 ![Godot Badge](https://img.shields.io/badge/Godot-4.4+-blue.svg)
 ![License](https://img.shields.io/badge/License-MIT-green.svg)
 ![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Linux%20%7C%20macOS-lightgrey)
+
+[![Watch on YouTube](https://img.shields.io/badge/YouTube-GFS%20Review-red?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/uRmB3MXzR_Q?si=s-mqPHxdC0RcUgZr)
+
+**Watch GFS - Games From Scratch review video on Youtube**
 
 ## 👨‍💻 Developer
 
@@ -61,8 +66,8 @@ Created by **[bukkbeek](https://bukkbeek.github.io/)** - an independent game dev
 
 1. **Clone and open:**
    ```bash
-   git clone https://github.com/bukkbeek/GodotPixelStudio.git
-   cd GodotPixelStudio
+   git clone https://github.com/bukkbeek/GodotPixelRenderer.git
+   cd GodotPixelRenderer
    ```
 
 2. **Launch in Godot:**
@@ -84,7 +89,7 @@ Created by **[bukkbeek](https://bukkbeek.github.io/)** - an independent game dev
 - **Effects**: Pixelation slider, color steps, palette mode, and post-processing
 - **Export**: Directory selection, resolution scaling, and filename customization
 
-## 🛠️ Technical Details
+## ��️ Technical Details
 
 ### Core Architecture
 - **`PixelRenderer.gd`**: Main controller and export system
@@ -100,9 +105,9 @@ Captures animation frames using SubViewport rendering with real-time pixel art e
 
 ### Get Involved
 - **⭐ Star** this repository
-- **🐛 Report issues** on [GitHub Issues](https://github.com/bukkbeek/GodotPixelStudio/issues)
+- **🐛 Report issues** on [GitHub Issues](https://github.com/bukkbeek/GodotPixelRenderer/issues)
 - **💡 Submit** pull requests and feature suggestions
-- **📖 Check** the wiki for detailed documentation
+
 
 ## 📄 License
 
@@ -111,6 +116,9 @@ This project is licensed under the MIT License.
 ## 🙏 Acknowledgments
 
 Thanks to the **Godot Engine** community, **Lospec** pixel art community, and **KayKit** for the default skeleton asset.
+
+Thanks to:
+- Viktor Edén (github.com/HolyAcorn) for making the normal material and normal map export functionality
 
 ### 🤖 AI Development Assistance
 This project was developed with the assistance of **Claude Sonnet** through **Cursor AI** as a coding assistant, helping to enhance development efficiency and code quality.

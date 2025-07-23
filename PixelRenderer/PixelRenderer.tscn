@@ -205,7 +205,7 @@ custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
 theme_override_font_sizes/font_size = 30
 theme_override_styles/normal = SubResource("StyleBoxFlat_5aq5t")
-text = "PIXEL RENDERER"
+text = "GODOT PIXEL RENDERER"
 horizontal_alignment = 1
 vertical_alignment = 2
 
@@ -215,7 +215,7 @@ layout_mode = 2
 theme_override_colors/font_color = Color(0.396889, 0.396889, 0.396889, 1)
 theme_override_font_sizes/font_size = 20
 theme_override_styles/normal = SubResource("StyleBoxFlat_5aq5t")
-text = "3D to PixelArt toolkit by Bukkbeek"
+text = "3D to PixelArt toolkit"
 horizontal_alignment = 1
 uppercase = true
 
