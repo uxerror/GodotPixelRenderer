@@ -4,3 +4,4 @@ res://PixelRenderer/data/PixelArt.gdshader
 res://PixelRenderer/data/PixelMaterial.tres
 res://PixelRenderer/data/NormalMaterial.gdshader
 res://PixelRenderer/data/NormalMaterial.tres
+res://PixelRenderer/data/scripts/models_handler.gd

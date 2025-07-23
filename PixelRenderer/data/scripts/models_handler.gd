@@ -16,6 +16,7 @@ extends Node3D
 @onready var button_left: Button = %Button_Left
 @onready var button_right: Button = %Button_Right
 @onready var rot_reset_button: Button = %RotResetButton
+@onready var zoom_reset_button: Button = %ZoomResetButton
 
 
 
@@ -29,6 +30,7 @@ func _ready():
 	z_pos_spin.value_changed.connect(_on_position_changed)
 	zoom_spin.value_changed.connect(_on_zoom_changed)
 	reset_button.pressed.connect(_reset_to_defaults)
+	zoom_reset_button.pressed.connect(_reset_zoom)
 	
 	# Connect rotation spinboxes to update rotation
 	x_rot_spin.value_changed.connect(_on_rotation_changed)
@@ -82,18 +84,16 @@ func _on_zoom_changed(value):
 	camera.size = value
 
 func _reset_to_defaults():
-	# Set default values: position (0,0,0) and zoom 8.0
+	# Set default values: position (0,0,0)
 	x_pos_spin.value = 0.0
 	y_pos_spin.value = 0.0
 	z_pos_spin.value = 0.0
-	zoom_spin.value = 4.0
-	
-	# Reset rotation to (0,0,0)
-	x_rot_spin.value = 0.0
-	y_rot_spin.value = 0.0
-	z_rot_spin.value = 0.0
-	
-	# Update position, rotation and camera immediately
+
+	# Update position
 	position = Vector3(0.0, 0.0, 0.0)
-	rotation_degrees = Vector3(0.0, 0.0, 0.0)
+
+
+func _reset_zoom():
+	# Reset zoom to default value
+	zoom_spin.value = 4.0
 	camera.size = 4.0
