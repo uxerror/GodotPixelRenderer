@@ -5,3 +5,4 @@ res://PixelRenderer/PixelRenderer.tscn
 res://PixelRenderer/data/theme.tres
 res://PixelRenderer/data/PixelArt.gdshader
 res://PixelRenderer/data/PixelMaterial.tres
+res://PixelRenderer/data/scripts/models_spawner.gd

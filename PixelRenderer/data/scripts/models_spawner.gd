@@ -19,9 +19,6 @@ extends Node3D
 # Console reference for logging
 @onready var console: TextEdit = %Console
 
-@export var normal_material : ShaderMaterial
-
-
 
 # File dialog for loading models
 var file_dialog: FileDialog
