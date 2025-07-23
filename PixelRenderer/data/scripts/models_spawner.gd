@@ -19,6 +19,7 @@ extends Node3D
 # Console reference for logging
 @onready var console: TextEdit = %Console
 
+@export var normal_material : ShaderMaterial
 
 
 
@@ -240,6 +241,7 @@ func _load_model(path: String):
 	# Generate the scene
 	var scene = gltf.generate_scene(state)
 	
+	
 	if scene == null:
 		_update_console("Failed to generate scene from: " + path)
 		load_scene_path.text = "Failed to generate scene: " + path.get_file()
@@ -257,6 +259,9 @@ func _load_model(path: String):
 	# Update the path label and setup animation player
 	_update_path_label()
 	_setup_animation_player()
+	
+	# Apply Normal Shader
+	
 	
 	# Trigger color sampling when a model is loaded
 	if pixel_material_script != null:

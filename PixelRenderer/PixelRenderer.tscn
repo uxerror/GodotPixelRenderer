@@ -1,4 +1,4 @@
-[gd_scene load_steps=45 format=3 uid="uid://y4o6ttmh8hb4"]
+[gd_scene load_steps=48 format=3 uid="uid://y4o6ttmh8hb4"]
 
 [ext_resource type="Script" uid="uid://dhq1ywbp8nv12" path="res://PixelRenderer/data/scripts/PixelRenderer.gd" id="1_5ibnk"]
 [ext_resource type="Material" uid="uid://dn8s72rfum4y4" path="res://PixelRenderer/data/Gizmo.tres" id="2_6vt7t"]
@@ -31,6 +31,8 @@
 [ext_resource type="Script" uid="uid://bl5gdvkylmyg8" path="res://PixelRenderer/data/scripts/models_spawner.gd" id="22_t0cwl"]
 [ext_resource type="Texture2D" uid="uid://b1eg0gu4npj5r" path="res://PixelRenderer/data/icons/delete.png" id="23_ilx0h"]
 [ext_resource type="PackedScene" uid="uid://6f4rhpj0da3q" path="res://Sample/Skeleton_Minion.glb" id="27_wwtbg"]
+[ext_resource type="Shader" uid="uid://dngf4tdv8ink7" path="res://PixelRenderer/data/NormalMaterial.gdshader" id="30_5xf31"]
+[ext_resource type="Script" uid="uid://cfaaudkr07yxx" path="res://PixelRenderer/data/scripts/normal_material.gd" id="33_g6ha7"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_6vt7t"]
 size = Vector3(0.01, 100, 0.01)
@@ -68,6 +70,12 @@ bg_color = Color(0.117647, 0.117647, 0.117647, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ilx0h"]
 bg_color = Color(0.176471, 0.176471, 0.176471, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_g6ha7"]
+render_priority = 0
+shader = ExtResource("30_5xf31")
+shader_parameter/WorldSpace = true
+shader_parameter/RemapRange = false
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_6vt7t"]
 size = Vector2(100, 100)
@@ -161,6 +169,8 @@ size = 7.773
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_top = -30.0
+offset_bottom = 4.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("2_l23g4")
@@ -421,7 +431,7 @@ layout_mode = 2
 text = "EXPORT PREVIEW "
 alignment = 2
 
-[node name="Label3" type="Label" parent="MainUI/LeftPanel/HBoxContainer5"]
+[node name="Label5" type="Label" parent="MainUI/LeftPanel/HBoxContainer5"]
 layout_mode = 2
 size_flags_horizontal = 3
 
@@ -437,6 +447,23 @@ layout_mode = 2
 color = Color(1, 1, 1, 1)
 
 [node name="Label4" type="Label" parent="MainUI/LeftPanel/HBoxContainer5"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer10" type="HBoxContainer" parent="MainUI/LeftPanel"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="MainUI/LeftPanel/HBoxContainer10"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="NormalMapCheckBox" type="CheckButton" parent="MainUI/LeftPanel/HBoxContainer10"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "NORMAL MAP"
+alignment = 2
+
+[node name="Label5" type="Label" parent="MainUI/LeftPanel/HBoxContainer10"]
 layout_mode = 2
 size_flags_horizontal = 3
 
@@ -1418,6 +1445,7 @@ script = ExtResource("11_8egxh")
 [node name="ModelsSpawner" type="Node3D" parent="ModelsHandler"]
 unique_name_in_owner = true
 script = ExtResource("22_t0cwl")
+normal_material = SubResource("ShaderMaterial_g6ha7")
 
 [node name="TempModel" type="Node3D" parent="ModelsHandler/ModelsSpawner"]
 unique_name_in_owner = true
@@ -1517,5 +1545,8 @@ surface_material_override/0 = ExtResource("2_6vt7t")
 
 [node name="PixelMaterial" type="Node" parent="."]
 script = ExtResource("16_yc5xn")
+
+[node name="NormalMaterial" type="Node" parent="."]
+script = ExtResource("33_g6ha7")
 
 [editable path="ModelsHandler/ModelsSpawner/TempModel/Skeleton_Minion"]

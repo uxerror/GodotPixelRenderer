@@ -1,5 +1,6 @@
 extends Node3D
 
+
 @onready var export_dir_path: Label = %ExportDirPath
 @onready var select_folder_button: Button = %SelectFolderButton
 @onready var export_button: Button = %ExportButton
@@ -28,6 +29,7 @@ extends Node3D
 
 @onready var resolution: SpinBox = %Resolution
 @onready var preview_image_check_box: CheckButton = %PreviewImageCheckBox
+@onready var normal_map_check_box : CheckButton = %NormalMapCheckBox
 @onready var canvas_size_label: Label = %CanvasSizeLabel
 
 @onready var console: TextEdit = %Console
@@ -76,6 +78,8 @@ func _ready():
 	file_dialog.dir_selected.connect(_on_directory_selected)
 	bg_color_check_box.toggled.connect(_on_bg_color_toggled)
 	bg_color_picker.color_changed.connect(_on_bg_color_changed)
+	
+	normal_map_check_box.toggled.connect(get_node("NormalMaterial").toggle_normal_map)
 	
 	# Set up file dialog
 	file_dialog.file_mode = FileDialog.FILE_MODE_OPEN_DIR
@@ -410,3 +414,7 @@ func _on_bg_color_changed(color: Color):
 func _update_bg_color_visibility():
 	var should_be_visible = bg_color_check_box.button_pressed
 	bg_color_rect.visible = should_be_visible
+
+
+func _on_normal_button_toggled(button_pressed : bool):
+	pass
