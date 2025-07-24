@@ -2,7 +2,7 @@
 ### (Known as: Godot Pixel Studio)
 
 <div align="center">
-  <img src="PixelRenderer.png" alt="Pixel Renderer" width="256" height="256">
+  <img src="Sample/PixelRendererGif.gif" alt="Pixel Renderer" width="256" height="256">
 </div>
 
 A powerful **3D to Pixel Art Renderer** built with Godot 4.4+ that transforms 3D models and animations into retro-style pixel art with customizable effects and frame by frame animation export capabilities.
