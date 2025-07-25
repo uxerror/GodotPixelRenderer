@@ -1,22 +1,28 @@
 extends Node
 
 const NORMAL_MATERIAL = preload("res://PixelRenderer/data/NormalMaterial.tres")
+const SPECULAR_MATERIAL = preload("res://PixelRenderer/data/SpecularMaterial.tres")
 
 @onready var models_spawner: Node3D = %ModelsSpawner
 
+@onready var view_mode_dropdown : OptionButton = %ViewModeDropDown
 
-func toggle_normal_map(toggle : bool):
+
+func item_selected(index : int):
 	var meshes = get_all_mesh_instances(get_all_children(models_spawner))
-	
-	if toggle:
-		for mesh in meshes:
-			mesh.set_surface_override_material(0, NORMAL_MATERIAL)
-	else:
-		for mesh in meshes:
-			mesh.set_surface_override_material(0, null)
-
-
-
+	match view_mode_dropdown.get_item_text(index):
+		"Albedo":
+			for mesh in meshes:
+				mesh.set_surface_override_material(0, null)
+		"Normal":
+			for mesh in meshes:
+				mesh.set_surface_override_material(0, NORMAL_MATERIAL)
+		"Specular":
+			for mesh in meshes:
+				mesh.set_surface_override_material(0, SPECULAR_MATERIAL)
+			
+			
+			
 func get_all_children(node) -> Array:
 	var nodes : Array = []
 	for N in node.get_children():

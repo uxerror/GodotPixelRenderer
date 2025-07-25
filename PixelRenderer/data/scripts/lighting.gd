@@ -123,18 +123,21 @@ func _apply_default_settings():
 		key_light.light_energy = DEFAULT_SETTINGS.key_light.intensity
 		key_light.light_color = DEFAULT_SETTINGS.key_light.color
 		key_light.rotation_degrees = DEFAULT_SETTINGS.key_light.rotation
+		key_light_check_button.button_pressed = DEFAULT_SETTINGS.key_light.enabled
 	
 	if fill_light:
 		fill_light.visible = DEFAULT_SETTINGS.fill_light.enabled
 		fill_light.light_energy = DEFAULT_SETTINGS.fill_light.intensity
 		fill_light.light_color = DEFAULT_SETTINGS.fill_light.color
 		fill_light.rotation_degrees = DEFAULT_SETTINGS.fill_light.rotation
+		fill_light_check_button.button_pressed = DEFAULT_SETTINGS.fill_light.enabled
 	
 	if rim_light:
 		rim_light.visible = DEFAULT_SETTINGS.rim_light.enabled
 		rim_light.light_energy = DEFAULT_SETTINGS.rim_light.intensity
 		rim_light.light_color = DEFAULT_SETTINGS.rim_light.color
 		rim_light.rotation_degrees = DEFAULT_SETTINGS.rim_light.rotation
+		rim_light_check_button.button_pressed = DEFAULT_SETTINGS.fill_light.enabled
 
 # Key Light handlers
 func _on_key_light_toggled(enabled: bool):

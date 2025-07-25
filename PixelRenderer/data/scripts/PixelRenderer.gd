@@ -29,7 +29,7 @@ extends Node3D
 
 @onready var resolution: SpinBox = %Resolution
 @onready var preview_image_check_box: CheckButton = %PreviewImageCheckBox
-@onready var normal_map_check_box : CheckButton = %NormalMapCheckBox
+@onready var view_mode_dropdown : OptionButton = %ViewModeDropDown
 @onready var canvas_size_label: Label = %CanvasSizeLabel
 
 @onready var console: TextEdit = %Console
@@ -87,7 +87,9 @@ func _ready():
 	bg_color_check_box.toggled.connect(_on_bg_color_toggled)
 	bg_color_picker.color_changed.connect(_on_bg_color_changed)
 	
-	normal_map_check_box.toggled.connect(get_node("NormalMaterial").toggle_normal_map)
+	# Setup View Modes
+	_setup_view_mode_dropdown()
+	view_mode_dropdown.item_selected.connect(_view_mode_item_selected)
 	
 	# Set up file dialog
 	file_dialog.file_mode = FileDialog.FILE_MODE_OPEN_DIR
@@ -528,5 +530,14 @@ func _update_bg_color_visibility():
 	bg_color_rect.visible = should_be_visible
 
 
-func _on_normal_button_toggled(_button_pressed : bool):
-	_update_progress("Rendering Normal Maps")
+func _view_mode_item_selected(index : int):
+	get_node("ViewMaterials").item_selected(index)
+	var selection : String = view_mode_dropdown.get_item_text(index)
+	_update_progress("Switching View Mode To " + selection)
+
+func _setup_view_mode_dropdown():
+	view_mode_dropdown.clear()
+	
+	view_mode_dropdown.add_item("Albedo")
+	view_mode_dropdown.add_item("Normal")
+	view_mode_dropdown.add_item("Specular")
