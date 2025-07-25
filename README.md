@@ -119,6 +119,24 @@ Captures animation frames using SubViewport rendering with real-time pixel art e
 
 This project is licensed under the MIT License.
 
+## 📋 Changelog
+
+### v1.1.1 - July 25, 2025
+- **✨ New Features:**
+  - Added normal maps rendering support (by [Viktor Edén](https://github.com/HolyAcorn))
+  - Added specular maps rendering support (by [Viktor Edén](https://github.com/HolyAcorn))
+  - mode selection will automatically trigger color remap toggle
+
+### v1.1 - July 23, 2025
+- **Bugs Fixed:**
+  - Fixed animation rendering and export issues
+  - Fixed background rendering problems
+  - Fixed transparent background rendering
+
+### v1.0 - July 22, 2025
+- **🎉 Initial Release**
+  - *Note: This initial release contained several bugs that were addressed in subsequent updates*
+
 ## 🙏 Acknowledgments
 
 Thanks to the **Godot Engine** community, **Lospec** pixel art community, and **KayKit** for the default skeleton asset.
