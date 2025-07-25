@@ -82,6 +82,7 @@ script = ExtResource("1_5ibnk")
 [node name="Axis" type="MeshInstance3D" parent="Gizmo"]
 unique_name_in_owner = true
 transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0)
+visible = false
 mesh = SubResource("BoxMesh_6vt7t")
 surface_material_override/0 = ExtResource("2_6vt7t")
 
@@ -99,6 +100,7 @@ surface_material_override/0 = ExtResource("2_6vt7t")
 
 [node name="Origin" type="MeshInstance3D" parent="Gizmo"]
 unique_name_in_owner = true
+visible = false
 mesh = SubResource("SphereMesh_ilx0h")
 surface_material_override/0 = ExtResource("2_6vt7t")
 
@@ -270,6 +272,7 @@ fit_to_longest_item = false
 unique_name_in_owner = true
 custom_minimum_size = Vector2(36, 36)
 layout_mode = 2
+tooltip_text = "Play/ Pause"
 icon = ExtResource("4_6wj3c")
 icon_alignment = 1
 expand_icon = true
@@ -278,6 +281,7 @@ expand_icon = true
 unique_name_in_owner = true
 custom_minimum_size = Vector2(36, 36)
 layout_mode = 2
+tooltip_text = "Play/ Pause"
 icon = ExtResource("5_t0cwl")
 icon_alignment = 1
 expand_icon = true
@@ -286,6 +290,7 @@ expand_icon = true
 unique_name_in_owner = true
 custom_minimum_size = Vector2(36, 36)
 layout_mode = 2
+tooltip_text = "Stop"
 icon = ExtResource("6_l23g4")
 icon_alignment = 1
 expand_icon = true
@@ -294,6 +299,8 @@ expand_icon = true
 unique_name_in_owner = true
 custom_minimum_size = Vector2(36, 36)
 layout_mode = 2
+tooltip_text = "Loop Animation
+[for best results, drop one frame from end]"
 icon = ExtResource("7_wwtbg")
 icon_alignment = 1
 expand_icon = true
@@ -301,6 +308,7 @@ expand_icon = true
 [node name="AnimSlider" type="HSlider" parent="MainUI/LeftPanel"]
 unique_name_in_owner = true
 layout_mode = 2
+tooltip_text = "Visual feedback for current frame"
 tick_count = 10
 ticks_on_borders = true
 
@@ -314,6 +322,7 @@ text = " START:"
 [node name="StartSpin" type="SpinBox" parent="MainUI/LeftPanel/ExportOptions2"]
 unique_name_in_owner = true
 layout_mode = 2
+tooltip_text = "Set animation start frame"
 value = 1.0
 
 [node name="Label2" type="Label" parent="MainUI/LeftPanel/ExportOptions2"]
@@ -323,6 +332,7 @@ text = " END:"
 [node name="EndSpin" type="SpinBox" parent="MainUI/LeftPanel/ExportOptions2"]
 unique_name_in_owner = true
 layout_mode = 2
+tooltip_text = "Set animation end frame"
 value = 30.0
 
 [node name="Label3" type="Label" parent="MainUI/LeftPanel/ExportOptions2"]
@@ -332,6 +342,7 @@ text = " FPS:"
 [node name="FpsSpin" type="SpinBox" parent="MainUI/LeftPanel/ExportOptions2"]
 unique_name_in_owner = true
 layout_mode = 2
+tooltip_text = "Set animation playback speed"
 max_value = 60.0
 value = 12.0
 
@@ -339,6 +350,7 @@ value = 12.0
 unique_name_in_owner = true
 custom_minimum_size = Vector2(36, 36)
 layout_mode = 2
+tooltip_text = "Reset animation parameters"
 icon = ExtResource("9_ilx0h")
 expand_icon = true
 
@@ -367,6 +379,7 @@ stretch_mode = 4
 unique_name_in_owner = true
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
+tooltip_text = "Set resolution"
 value = 100.0
 allow_greater = true
 suffix = "px"
@@ -381,6 +394,8 @@ clip_contents = true
 custom_minimum_size = Vector2(186.53, 0)
 layout_mode = 2
 size_flags_horizontal = 3
+tooltip_text = "Add naming prefix
+e.g. 'run1' will result in run1_0001"
 placeholder_text = "prefix text"
 
 [node name="Label3" type="Label" parent="MainUI/LeftPanel/ExportResolution"]
@@ -427,7 +442,7 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Export preview (Hi-res)"
-text = " PREVIEW "
+text = " PREVIEW"
 alignment = 2
 
 [node name="Label5" type="Label" parent="MainUI/LeftPanel/HBoxContainer5"]
@@ -438,7 +453,7 @@ size_flags_horizontal = 3
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Set Background Color"
-text = "BG "
+text = "BG"
 
 [node name="BgColorPicker" type="ColorPickerButton" parent="MainUI/LeftPanel/HBoxContainer5"]
 unique_name_in_owner = true
@@ -446,14 +461,22 @@ custom_minimum_size = Vector2(36, 0)
 layout_mode = 2
 color = Color(1, 1, 1, 1)
 
-[node name="Label4" type="Label" parent="MainUI/LeftPanel/HBoxContainer5"]
+[node name="Label6" type="Label" parent="MainUI/LeftPanel/HBoxContainer5"]
 layout_mode = 2
 size_flags_horizontal = 3
 
+[node name="Label4" type="Label" parent="MainUI/LeftPanel/HBoxContainer5"]
+layout_mode = 2
+text = "MODE:"
+
 [node name="ViewModeDropDown" type="OptionButton" parent="MainUI/LeftPanel/HBoxContainer5"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(125, 0)
 layout_mode = 2
+tooltip_text = "Select rendering mode"
 theme = ExtResource("2_l23g4")
+clip_text = true
+fit_to_longest_item = false
 
 [node name="HSeparator3" type="HSeparator" parent="MainUI/LeftPanel"]
 layout_mode = 2
@@ -528,6 +551,7 @@ horizontal_alignment = 2
 unique_name_in_owner = true
 custom_minimum_size = Vector2(36, 36)
 layout_mode = 2
+tooltip_text = "Reset position adjustments"
 icon = ExtResource("9_ilx0h")
 expand_icon = true
 
@@ -589,6 +613,7 @@ horizontal_alignment = 2
 unique_name_in_owner = true
 custom_minimum_size = Vector2(36, 36)
 layout_mode = 2
+tooltip_text = "Reset rotation adjustments"
 icon = ExtResource("9_ilx0h")
 expand_icon = true
 
@@ -660,6 +685,7 @@ horizontal_alignment = 2
 unique_name_in_owner = true
 custom_minimum_size = Vector2(36, 36)
 layout_mode = 2
+tooltip_text = "Reset scale adjustment"
 icon = ExtResource("9_ilx0h")
 expand_icon = true
 
@@ -731,6 +757,7 @@ size_flags_horizontal = 3
 unique_name_in_owner = true
 custom_minimum_size = Vector2(36, 36)
 layout_mode = 2
+tooltip_text = "Reset Key light"
 icon = ExtResource("9_ilx0h")
 expand_icon = true
 
@@ -790,6 +817,7 @@ size_flags_horizontal = 3
 unique_name_in_owner = true
 custom_minimum_size = Vector2(36, 36)
 layout_mode = 2
+tooltip_text = "Reset Fill light"
 icon = ExtResource("9_ilx0h")
 expand_icon = true
 
@@ -849,6 +877,7 @@ size_flags_horizontal = 3
 unique_name_in_owner = true
 custom_minimum_size = Vector2(36, 36)
 layout_mode = 2
+tooltip_text = "Reset Rim light"
 icon = ExtResource("9_ilx0h")
 expand_icon = true
 

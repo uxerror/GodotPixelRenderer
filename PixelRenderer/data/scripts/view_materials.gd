@@ -1,25 +1,32 @@
 extends Node
 
+# Signal emitted when a technical rendering mode (Normal/Specular) is selected
+signal technical_mode_selected(mode_name: String)
+
 const NORMAL_MATERIAL = preload("res://PixelRenderer/data/NormalMaterial.tres")
 const SPECULAR_MATERIAL = preload("res://PixelRenderer/data/SpecularMaterial.tres")
 
 @onready var models_spawner: Node3D = %ModelsSpawner
-
 @onready var view_mode_dropdown : OptionButton = %ViewModeDropDown
-
 
 func item_selected(index : int):
 	var meshes = get_all_mesh_instances(get_all_children(models_spawner))
-	match view_mode_dropdown.get_item_text(index):
+	var selected_mode = view_mode_dropdown.get_item_text(index)
+	
+	match selected_mode:
 		"Albedo":
 			for mesh in meshes:
 				mesh.set_surface_override_material(0, null)
 		"Normal":
 			for mesh in meshes:
 				mesh.set_surface_override_material(0, NORMAL_MATERIAL)
+			# Emit signal for technical mode selection
+			technical_mode_selected.emit("Normal")
 		"Specular":
 			for mesh in meshes:
 				mesh.set_surface_override_material(0, SPECULAR_MATERIAL)
+			# Emit signal for technical mode selection
+			technical_mode_selected.emit("Specular")
 			
 			
 			
