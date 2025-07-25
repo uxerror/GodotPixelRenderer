@@ -29,8 +29,9 @@ extends Node3D
 
 @onready var resolution: SpinBox = %Resolution
 @onready var preview_image_check_box: CheckButton = %PreviewImageCheckBox
-@onready var normal_map_check_box : CheckButton = %NormalMapCheckBox
+@onready var view_mode_dropdown : OptionButton = %ViewModeDropDown
 @onready var canvas_size_label: Label = %CanvasSizeLabel
+@onready var pixel_material_script: Node = $PixelMaterial
 
 @onready var console: TextEdit = %Console
 
@@ -87,7 +88,12 @@ func _ready():
 	bg_color_check_box.toggled.connect(_on_bg_color_toggled)
 	bg_color_picker.color_changed.connect(_on_bg_color_changed)
 	
-	normal_map_check_box.toggled.connect(get_node("NormalMaterial").toggle_normal_map)
+	# Setup View Modes
+	_setup_view_mode_dropdown()
+	view_mode_dropdown.item_selected.connect(_view_mode_item_selected)
+	
+	# Connect to ViewMaterials signal for automatic color remap toggle
+	get_node("ViewMaterials").technical_mode_selected.connect(_on_technical_mode_selected)
 	
 	# Set up file dialog
 	file_dialog.file_mode = FileDialog.FILE_MODE_OPEN_DIR
@@ -528,5 +534,27 @@ func _update_bg_color_visibility():
 	bg_color_rect.visible = should_be_visible
 
 
-func _on_normal_button_toggled(_button_pressed : bool):
-	_update_progress("Rendering Normal Maps")
+func _view_mode_item_selected(index : int):
+	get_node("ViewMaterials").item_selected(index)
+	var selection : String = view_mode_dropdown.get_item_text(index)
+	_update_progress("Switching View Mode To " + selection)
+
+func _on_technical_mode_selected(mode_name: String):
+	# Automatically turn off color remap when technical modes are selected
+	_turn_off_color_remap_if_enabled()
+	_update_progress("Technical mode '" + mode_name + "' selected - color remap automatically disabled")
+
+func _turn_off_color_remap_if_enabled():
+	# Check if color remap is currently enabled and turn it off
+	if pixel_material_script and pixel_material_script.use_palette_check_box.button_pressed:
+		pixel_material_script.use_palette_check_box.button_pressed = false
+		# Trigger the toggled signal to update the shader parameter
+		pixel_material_script._on_use_palette_toggled(false)
+		_update_progress("Color remap automatically turned off for technical view mode")
+
+func _setup_view_mode_dropdown():
+	view_mode_dropdown.clear()
+	
+	view_mode_dropdown.add_item("Albedo")
+	view_mode_dropdown.add_item("Normal")
+	view_mode_dropdown.add_item("Specular")

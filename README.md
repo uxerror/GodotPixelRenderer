@@ -124,7 +124,7 @@ This project is licensed under the MIT License.
 Thanks to the **Godot Engine** community, **Lospec** pixel art community, and **KayKit** for the default skeleton asset.
 
 Thanks to:
-- Viktor Edén (github.com/HolyAcorn) for making the normal material and normal map export functionality
+- Viktor Edén (github.com/HolyAcorn) for making the normal/ specular maps rendering features
 
 ### 🤖 AI Development Assistance
 This project was developed with the assistance of **Claude Sonnet** through **Cursor AI** as a coding assistant, helping to enhance development efficiency and code quality.
