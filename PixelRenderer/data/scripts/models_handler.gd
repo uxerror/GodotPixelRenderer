@@ -80,8 +80,8 @@ func _reset_rotation():
 	rotation_degrees = Vector3(0.0, 0.0, 0.0)
 
 func _on_zoom_changed(value):
-	# Update camera size when zoom spinbox changes
-	camera.size = value
+	if value > 0.0:
+		camera.size = value
 
 func _reset_to_defaults():
 	# Set default values: position (0,0,0)
