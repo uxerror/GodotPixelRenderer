@@ -117,27 +117,30 @@ func _connect_signals():
 	rim_light_reset_button.pressed.connect(_on_rim_light_reset)
 
 func _apply_default_settings():
+	var config = ConfigFile.new()
+	config.load(LIGHTING_CONFIG_FILE)
+	
 	# Apply default settings to lights
 	if key_light:
-		key_light.visible = DEFAULT_SETTINGS.key_light.enabled
-		key_light.light_energy = DEFAULT_SETTINGS.key_light.intensity
-		key_light.light_color = DEFAULT_SETTINGS.key_light.color
-		key_light.rotation_degrees = DEFAULT_SETTINGS.key_light.rotation
-		key_light_check_button.button_pressed = DEFAULT_SETTINGS.key_light.enabled
+		key_light.visible = config.get_value("key_light", "enabled", DEFAULT_SETTINGS.key_light.enabled)
+		key_light.light_energy = config.get_value("key_light", "intensity", DEFAULT_SETTINGS.key_light.intensity)
+		key_light.light_color = config.get_value("key_light", "color", DEFAULT_SETTINGS.key_light.color)
+		key_light.rotation_degrees = config.get_value("key_light", "rotation", DEFAULT_SETTINGS.key_light.rotation)
+		key_light_check_button.button_pressed = config.get_value("key_light", "enabled", DEFAULT_SETTINGS.key_light.enabled)
 	
 	if fill_light:
-		fill_light.visible = DEFAULT_SETTINGS.fill_light.enabled
-		fill_light.light_energy = DEFAULT_SETTINGS.fill_light.intensity
-		fill_light.light_color = DEFAULT_SETTINGS.fill_light.color
-		fill_light.rotation_degrees = DEFAULT_SETTINGS.fill_light.rotation
-		fill_light_check_button.button_pressed = DEFAULT_SETTINGS.fill_light.enabled
+		fill_light.visible = config.get_value("fill_light", "enabled", DEFAULT_SETTINGS.fill_light.enabled)
+		fill_light.light_energy = config.get_value("fill_light", "intensity", DEFAULT_SETTINGS.fill_light.intensity)
+		fill_light.light_color = config.get_value("fill_light", "color", DEFAULT_SETTINGS.fill_light.color)
+		fill_light.rotation_degrees = config.get_value("fill_light", "rotation", DEFAULT_SETTINGS.fill_light.rotation)
+		fill_light_check_button.button_pressed = config.get_value("fill_light", "enabled", DEFAULT_SETTINGS.fill_light.enabled)
 	
 	if rim_light:
-		rim_light.visible = DEFAULT_SETTINGS.rim_light.enabled
-		rim_light.light_energy = DEFAULT_SETTINGS.rim_light.intensity
-		rim_light.light_color = DEFAULT_SETTINGS.rim_light.color
-		rim_light.rotation_degrees = DEFAULT_SETTINGS.rim_light.rotation
-		rim_light_check_button.button_pressed = DEFAULT_SETTINGS.fill_light.enabled
+		rim_light.visible = config.get_value("rim_light", "enabled", DEFAULT_SETTINGS.rim_light.enabled)
+		rim_light.light_energy = config.get_value("rim_light", "intensity", DEFAULT_SETTINGS.rim_light.intensity)
+		rim_light.light_color = config.get_value("rim_light", "color", DEFAULT_SETTINGS.rim_light.color)
+		rim_light.rotation_degrees = config.get_value("rim_light", "rotation", DEFAULT_SETTINGS.rim_light.rotation)
+		rim_light_check_button.button_pressed = config.get_value("rim_light", "enabled", DEFAULT_SETTINGS.rim_light.enabled)
 
 # Key Light handlers
 func _on_key_light_toggled(enabled: bool):

@@ -1,6 +1,7 @@
 extends Node3D
 
 # UI References
+@export var renderer: Node3D
 @onready var load_scene_button: Button = %LoadSceneButton
 @onready var load_scene_path: Label = %LoadScenePath
 
@@ -17,7 +18,7 @@ extends Node3D
 @onready var end_spin: SpinBox = %EndSpin
 
 # Console reference for logging
-@onready var console: TextEdit = %Console
+@onready var console: HBoxContainer = %ConsoleContainer
 
 
 # File dialog for loading models
@@ -74,16 +75,6 @@ func _ready():
 	# Get reference to pixel_material script for color sampling
 	_find_pixel_material_reference()
 
-func _update_console(message: String):
-	# Update the console TextEdit with the message
-	if console:
-		console.text += message + "\n"
-		# Scroll to the bottom to show the latest message
-		console.scroll_vertical = console.get_line_count()
-	else:
-		# Fallback to print if console is not available
-		print(message)
-
 func _setup_auto_refresh():
 	# Create auto-refresh timer to periodically check for animation changes
 	auto_refresh_timer = Timer.new()
@@ -92,7 +83,7 @@ func _setup_auto_refresh():
 	add_child(auto_refresh_timer)
 	auto_refresh_timer.start()
 	
-	_update_console("Auto-refresh timer initialized - checking for animation changes every second")
+	console._update("Auto-refresh timer initialized - checking for animation changes every second")
 
 func _on_auto_refresh_timer_timeout():
 	# Check if the model structure or animations have changed
@@ -114,20 +105,20 @@ func _on_auto_refresh_timer_timeout():
 	
 	# Check if model structure changed
 	if current_node_count != last_model_node_count:
-		_update_console("Model structure changed - triggering refresh")
+		console._update("Model structure changed - triggering refresh")
 		needs_refresh = true
 		last_model_node_count = current_node_count
 	
 	# Check if animation count changed
 	if current_anim_count != last_animation_count:
-		_update_console("Animation count changed from " + str(last_animation_count) + " to " + str(current_anim_count) + " - triggering refresh")
+		console._update("Animation count changed from " + str(last_animation_count) + " to " + str(current_anim_count) + " - triggering refresh")
 		needs_refresh = true
 		last_animation_count = current_anim_count
 	
 	# Check if AnimationPlayer was lost/found
 	var found_player = _find_animation_player(loaded_model)
 	if (found_player == null) != (current_animation_player == null):
-		_update_console("AnimationPlayer availability changed - triggering refresh")
+		console._update("AnimationPlayer availability changed - triggering refresh")
 		needs_refresh = true
 	
 	if needs_refresh:
@@ -140,7 +131,7 @@ func _count_nodes_recursive(node: Node) -> int:
 	return count
 
 func _refresh_animation_controls():
-	_update_console("Refreshing animation controls...")
+	console._update("Refreshing animation controls...")
 	_setup_animation_player()
 
 func _setup_animation_controls():
@@ -167,6 +158,7 @@ func _setup_animation_controls():
 	_update_play_button_visual()
 
 func _process(_delta):
+	
 	# Update slider position during playback (if not being dragged)
 	if current_animation_player != null and not is_slider_being_dragged:
 		if current_animation_player.is_playing() and current_animation_player.current_animation != "":
@@ -231,7 +223,7 @@ func _load_model(path: String):
 	var error = gltf.append_from_file(path, state)
 	
 	if error != OK:
-		_update_console("Failed to load model: " + path)
+		console._update("Failed to load model: " + path)
 		load_scene_path.text = "Failed to load: " + path.get_file()
 		return
 	
@@ -240,7 +232,7 @@ func _load_model(path: String):
 	
 	
 	if scene == null:
-		_update_console("Failed to generate scene from: " + path)
+		console._update("Failed to generate scene from: " + path)
 		load_scene_path.text = "Failed to generate scene: " + path.get_file()
 		return
 	
@@ -267,7 +259,7 @@ func _load_model(path: String):
 		await get_tree().process_frame
 		pixel_material_script.sample_colors_from_render()
 	
-	_update_console("Successfully loaded model: " + path)
+	console._update("Successfully loaded model: " + path)
 
 func _setup_animation_player():
 	# Find AnimationPlayer in the loaded model
@@ -276,7 +268,7 @@ func _setup_animation_player():
 	if current_animation_player != null:
 		var library = current_animation_player.get_animation_library("")
 		var anim_count = library.get_animation_list().size() if library != null else 0
-		_update_console("Found AnimationPlayer with " + str(anim_count) + " animations")
+		console._update("Found AnimationPlayer with " + str(anim_count) + " animations")
 		
 		_populate_animation_selector()
 		_enable_animation_controls(true)
@@ -288,7 +280,7 @@ func _setup_animation_player():
 		# Update tracking variables
 		last_animation_count = anim_count
 	else:
-		_update_console("No AnimationPlayer found in loaded model")
+		console._update("No AnimationPlayer found in loaded model")
 		_enable_animation_controls(false)
 		_clear_animation_selector()
 		last_animation_count = 0
@@ -372,7 +364,7 @@ func _update_loop_button_visual():
 func _on_loop_toggle_pressed():
 	is_loop_enabled = not is_loop_enabled
 	_update_loop_button_visual()
-	_update_console("Loop toggled: " + str(is_loop_enabled))
+	console._update("Loop toggled: " + str(is_loop_enabled))
 
 func _on_animation_selected(index: int):
 	if current_animation_player == null:
@@ -386,7 +378,7 @@ func _on_animation_selected(index: int):
 		current_animation_player.current_animation = anim_name
 		_setup_frame_controls()
 		_update_slider_range()
-		_update_console("Selected animation: " + anim_name)
+		console._update("Selected animation: " + anim_name)
 
 func _on_slider_drag_started():
 	is_slider_being_dragged = true
@@ -406,18 +398,18 @@ func _on_slider_value_changed(value: float):
 	var target_position = trimmed_start_time + target_relative_time
 	
 	# Seek to the position
-	current_animation_player.seek(target_position)
+	current_animation_player.seek(target_position, true)
 	
 	if is_slider_being_dragged:
-		_update_console("Seeked to frame: " + str(int((target_position * animation_fps))) + " (position: " + str(target_position) + " seconds)")
+		console._update("Seeked to frame: " + str(int((target_position * animation_fps))) + " (position: " + str(target_position) + " seconds)")
 
 func _on_animation_finished(anim_name: String):
-	_update_console("Animation finished: " + anim_name)
+	console._update("Animation finished: " + anim_name)
 	
 	# Handle looping
 	if is_loop_enabled and current_animation_player != null:
 		current_animation_player.play(anim_name)
-		_update_console("Looping animation: " + anim_name)
+		console._update("Looping animation: " + anim_name)
 	else:
 		# Reset slider to beginning
 		anim_slider.value = 0.0
@@ -446,7 +438,7 @@ func _setup_frame_controls():
 	start_frame = 0
 	end_frame = total_frames
 	
-	_update_console("Setup frame controls - Total frames: " + str(total_frames) + " at " + str(animation_fps) + " FPS")
+	console._update("Setup frame controls - Total frames: " + str(total_frames) + " at " + str(animation_fps) + " FPS")
 
 func _get_trimmed_duration() -> float:
 	return (end_frame - start_frame) / animation_fps
@@ -462,7 +454,7 @@ func _on_start_frame_changed(value: float):
 	# Update end spin minimum to be at least start + 1
 	end_spin.min_value = start_frame + 1
 	
-	_update_console("Start frame changed to: " + str(start_frame))
+	console._update("Start frame changed to: " + str(start_frame))
 	_update_slider_range()
 
 func _on_end_frame_changed(value: float):
@@ -476,7 +468,7 @@ func _on_end_frame_changed(value: float):
 	# Update start spin maximum to be at most end - 1
 	start_spin.max_value = end_frame - 1
 	
-	_update_console("End frame changed to: " + str(end_frame))
+	console._update("End frame changed to: " + str(end_frame))
 	_update_slider_range()
 
 func _update_play_button_visual():
@@ -504,7 +496,7 @@ func _on_play_pressed():
 			current_animation_player.seek(start_time)
 			
 			_update_play_button_visual()
-			_update_console("Playing animation: " + anim_name + " from frame " + str(start_frame))
+			console._update("Playing animation: " + anim_name + " from frame " + str(start_frame))
 
 # Override existing pause function to include visual feedback  
 func _on_pause_pressed():
@@ -513,11 +505,11 @@ func _on_pause_pressed():
 	
 	if current_animation_player.is_playing():
 		current_animation_player.pause()
-		_update_console("Animation paused")
+		console._update("Animation paused")
 	else:
 		# Resume if paused
 		current_animation_player.play()
-		_update_console("Animation resumed")
+		console._update("Animation resumed")
 	
 	_update_play_button_visual()
 
@@ -529,7 +521,7 @@ func _on_stop_pressed():
 	current_animation_player.stop()
 	anim_slider.value = 0.0
 	_update_play_button_visual()
-	_update_console("Animation stopped")
+	console._update("Animation stopped")
 
 
 func _update_path_label():
@@ -554,13 +546,13 @@ func clear_loaded_model():
 		loaded_model = null
 		current_model_path = ""
 		_update_path_label()
-		_update_console("Loaded model cleared") 
+		console._update("Loaded model cleared") 
 
 func _find_pixel_material_reference():
 	# Find the PixelMaterial script node - it's a direct child of the root PixelRenderer node
 	var root_node = get_node("../../")  # Go up to the PixelRenderer root
 	pixel_material_script = root_node.get_node_or_null("PixelMaterial")
 	if pixel_material_script != null:
-		_update_console("Found PixelMaterial script reference")
+		console._update("Found PixelMaterial script reference")
 	else:
-		_update_console("WARNING: PixelMaterial script not found - color sampling will not work")
+		console._update("WARNING: PixelMaterial script not found - color sampling will not work")

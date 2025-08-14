@@ -1,4 +1,4 @@
-[gd_scene load_steps=46 format=3 uid="uid://y4o6ttmh8hb4"]
+[gd_scene load_steps=47 format=3 uid="uid://y4o6ttmh8hb4"]
 
 [ext_resource type="Script" uid="uid://dhq1ywbp8nv12" path="res://PixelRenderer/data/scripts/PixelRenderer.gd" id="1_5ibnk"]
 [ext_resource type="Material" uid="uid://dn8s72rfum4y4" path="res://PixelRenderer/data/Gizmo.tres" id="2_6vt7t"]
@@ -30,6 +30,7 @@
 [ext_resource type="Texture2D" uid="uid://8aamt3gec8d5" path="res://PixelRenderer/data/icons/save.png" id="22_6vt7t"]
 [ext_resource type="Script" uid="uid://bl5gdvkylmyg8" path="res://PixelRenderer/data/scripts/models_spawner.gd" id="22_t0cwl"]
 [ext_resource type="Texture2D" uid="uid://b1eg0gu4npj5r" path="res://PixelRenderer/data/icons/delete.png" id="23_ilx0h"]
+[ext_resource type="Script" uid="uid://d08tfpyxc4pu1" path="res://PixelRenderer/data/scripts/ConsoleController.gd" id="26_g6ha7"]
 [ext_resource type="PackedScene" uid="uid://6f4rhpj0da3q" path="res://Sample/Skeleton_Minion.glb" id="27_wwtbg"]
 [ext_resource type="Script" uid="uid://1oqvcrn8dkab" path="res://PixelRenderer/data/scripts/view_materials.gd" id="34_owbk2"]
 
@@ -161,12 +162,13 @@ projection = 1
 size = 7.773
 
 [node name="ViewportBackgroundColorRect" type="ColorRect" parent="."]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(800, 800)
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -400.0
-offset_right = 400.0
+offset_left = -405.0
+offset_right = 395.0
 offset_bottom = 800.0
 grow_horizontal = 2
 color = Color(0.0911215, 0.0911214, 0.0911214, 1)
@@ -184,7 +186,6 @@ layout_mode = 2
 
 [node name="LeftPanel" type="VBoxContainer" parent="MainUI"]
 layout_mode = 2
-size_flags_horizontal = 3
 theme_override_constants/separation = 10
 
 [node name="HBoxContainer9" type="HBoxContainer" parent="MainUI/LeftPanel"]
@@ -375,11 +376,22 @@ texture = ExtResource("8_t0cwl")
 expand_mode = 2
 stretch_mode = 4
 
-[node name="Resolution" type="SpinBox" parent="MainUI/LeftPanel/ExportResolution"]
+[node name="ResolutionX" type="SpinBox" parent="MainUI/LeftPanel/ExportResolution"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 tooltip_text = "Set resolution"
+max_value = 4096.0
+value = 100.0
+allow_greater = true
+suffix = "px"
+
+[node name="ResolutionY" type="SpinBox" parent="MainUI/LeftPanel/ExportResolution"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+tooltip_text = "Set resolution"
+max_value = 4096.0
 value = 100.0
 allow_greater = true
 suffix = "px"
@@ -391,7 +403,7 @@ size_flags_horizontal = 3
 [node name="PrefixText" type="LineEdit" parent="MainUI/LeftPanel/ExportResolution"]
 unique_name_in_owner = true
 clip_contents = true
-custom_minimum_size = Vector2(186.53, 0)
+custom_minimum_size = Vector2(245, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Add naming prefix
@@ -402,17 +414,8 @@ placeholder_text = "prefix text"
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="ExportButton" type="Button" parent="MainUI/LeftPanel/ExportResolution"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(128, 0)
-layout_mode = 2
-text = "EXPORT"
-icon = ExtResource("9_l23g4")
-expand_icon = true
-
 [node name="ExportOptions4" type="HBoxContainer" parent="MainUI/LeftPanel"]
 layout_mode = 2
-theme_override_constants/separation = 10
 
 [node name="SelectFolderButton" type="Button" parent="MainUI/LeftPanel/ExportOptions4"]
 unique_name_in_owner = true
@@ -429,6 +432,21 @@ size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.473976, 0.473976, 0.473976, 1)
 text = "://path-to-export-dir"
 clip_text = true
+
+[node name="Label4" type="Label" parent="MainUI/LeftPanel/ExportOptions4"]
+layout_mode = 2
+
+[node name="ExportButton" type="Button" parent="MainUI/LeftPanel/ExportOptions4"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+text = "EXPORT"
+icon = ExtResource("9_l23g4")
+expand_icon = true
+
+[node name="Label3" type="Label" parent="MainUI/LeftPanel/ExportOptions4"]
+custom_minimum_size = Vector2(3, 0)
+layout_mode = 2
 
 [node name="ProgressBar" type="ProgressBar" parent="MainUI/LeftPanel"]
 unique_name_in_owner = true
@@ -516,9 +534,12 @@ text = "X:"
 [node name="XPosSpin" type="SpinBox" parent="MainUI/LeftPanel/PositionAdjust"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 20.0
 step = 0.1
 allow_greater = true
 allow_lesser = true
+alignment = 2
 
 [node name="Label3" type="Label" parent="MainUI/LeftPanel/PositionAdjust"]
 layout_mode = 2
@@ -527,9 +548,12 @@ text = "Y:"
 [node name="YPosSpin" type="SpinBox" parent="MainUI/LeftPanel/PositionAdjust"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 20.0
 step = 0.1
 allow_greater = true
 allow_lesser = true
+alignment = 2
 
 [node name="Label4" type="Label" parent="MainUI/LeftPanel/PositionAdjust"]
 layout_mode = 2
@@ -538,9 +562,12 @@ text = "Z:"
 [node name="ZPosSpin" type="SpinBox" parent="MainUI/LeftPanel/PositionAdjust"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 20.0
 step = 0.1
 allow_greater = true
 allow_lesser = true
+alignment = 2
 
 [node name="Label8" type="Label" parent="MainUI/LeftPanel/PositionAdjust"]
 layout_mode = 2
@@ -578,9 +605,12 @@ text = "X:"
 [node name="XRotSpin" type="SpinBox" parent="MainUI/LeftPanel/RotationAdjust"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 20.0
 step = 0.1
 allow_greater = true
 allow_lesser = true
+alignment = 2
 
 [node name="Label3" type="Label" parent="MainUI/LeftPanel/RotationAdjust"]
 layout_mode = 2
@@ -589,9 +619,12 @@ text = "Y:"
 [node name="YRotSpin" type="SpinBox" parent="MainUI/LeftPanel/RotationAdjust"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 20.0
 step = 0.1
 allow_greater = true
 allow_lesser = true
+alignment = 2
 
 [node name="Label4" type="Label" parent="MainUI/LeftPanel/RotationAdjust"]
 layout_mode = 2
@@ -600,9 +633,12 @@ text = "Z:"
 [node name="ZRotSpin" type="SpinBox" parent="MainUI/LeftPanel/RotationAdjust"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 20.0
 step = 0.1
 allow_greater = true
 allow_lesser = true
+alignment = 2
 
 [node name="Label6" type="Label" parent="MainUI/LeftPanel/RotationAdjust"]
 layout_mode = 2
@@ -620,12 +656,17 @@ expand_icon = true
 [node name="HBoxContainer2" type="HBoxContainer" parent="MainUI/LeftPanel"]
 layout_mode = 2
 
-[node name="Label6" type="Label" parent="MainUI/LeftPanel/HBoxContainer2"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MainUI/LeftPanel/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.2
+
+[node name="Label6" type="Label" parent="MainUI/LeftPanel/HBoxContainer2/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 horizontal_alignment = 2
 
-[node name="Button_Up" type="Button" parent="MainUI/LeftPanel/HBoxContainer2"]
+[node name="Button_Up" type="Button" parent="MainUI/LeftPanel/HBoxContainer2/HBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(36, 36)
 layout_mode = 2
@@ -633,7 +674,7 @@ icon = ExtResource("7_klpv1")
 icon_alignment = 1
 expand_icon = true
 
-[node name="Button_Down" type="Button" parent="MainUI/LeftPanel/HBoxContainer2"]
+[node name="Button_Down" type="Button" parent="MainUI/LeftPanel/HBoxContainer2/HBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(36, 36)
 layout_mode = 2
@@ -641,7 +682,7 @@ icon = ExtResource("8_75uvr")
 icon_alignment = 1
 expand_icon = true
 
-[node name="Button_Left" type="Button" parent="MainUI/LeftPanel/HBoxContainer2"]
+[node name="Button_Left" type="Button" parent="MainUI/LeftPanel/HBoxContainer2/HBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(36, 36)
 layout_mode = 2
@@ -649,7 +690,7 @@ icon = ExtResource("9_lbuph")
 icon_alignment = 1
 expand_icon = true
 
-[node name="Button_Right" type="Button" parent="MainUI/LeftPanel/HBoxContainer2"]
+[node name="Button_Right" type="Button" parent="MainUI/LeftPanel/HBoxContainer2/HBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(36, 36)
 layout_mode = 2
@@ -657,28 +698,36 @@ icon = ExtResource("10_3lf5q")
 icon_alignment = 1
 expand_icon = true
 
-[node name="Label5" type="Label" parent="MainUI/LeftPanel/HBoxContainer2"]
+[node name="Label5" type="Label" parent="MainUI/LeftPanel/HBoxContainer2/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 horizontal_alignment = 2
 
-[node name="TextureRect" type="TextureRect" parent="MainUI/LeftPanel/HBoxContainer2"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MainUI/LeftPanel/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TextureRect" type="TextureRect" parent="MainUI/LeftPanel/HBoxContainer2/HBoxContainer2"]
 custom_minimum_size = Vector2(36, 36)
 layout_mode = 2
 texture = ExtResource("11_5xf31")
 expand_mode = 2
 stretch_mode = 4
 
-[node name="CameraZoomSpin" type="SpinBox" parent="MainUI/LeftPanel/HBoxContainer2"]
+[node name="CameraZoomSpin" type="SpinBox" parent="MainUI/LeftPanel/HBoxContainer2/HBoxContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 5.0
 step = 0.1
 value = 4.0
 allow_greater = true
+alignment = 2
 
-[node name="Label7" type="Label" parent="MainUI/LeftPanel/HBoxContainer2"]
+[node name="Label7" type="Label" parent="MainUI/LeftPanel/HBoxContainer2/HBoxContainer2"]
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.9
 horizontal_alignment = 2
 
 [node name="ZoomResetButton" type="Button" parent="MainUI/LeftPanel/HBoxContainer2"]
@@ -721,6 +770,7 @@ size_flags_horizontal = 3
 unique_name_in_owner = true
 layout_mode = 2
 allow_greater = true
+alignment = 2
 
 [node name="Label5" type="Label" parent="MainUI/LeftPanel/HBoxContainer4"]
 layout_mode = 2
@@ -748,6 +798,7 @@ layout_mode = 2
 step = 0.1
 allow_greater = true
 allow_lesser = true
+alignment = 2
 
 [node name="Label3" type="Label" parent="MainUI/LeftPanel/HBoxContainer4"]
 layout_mode = 2
@@ -781,6 +832,7 @@ size_flags_horizontal = 3
 unique_name_in_owner = true
 layout_mode = 2
 allow_greater = true
+alignment = 2
 
 [node name="Label5" type="Label" parent="MainUI/LeftPanel/HBoxContainer6"]
 layout_mode = 2
@@ -808,6 +860,7 @@ layout_mode = 2
 step = 0.1
 allow_greater = true
 allow_lesser = true
+alignment = 2
 
 [node name="Label3" type="Label" parent="MainUI/LeftPanel/HBoxContainer6"]
 layout_mode = 2
@@ -841,6 +894,7 @@ size_flags_horizontal = 3
 unique_name_in_owner = true
 layout_mode = 2
 allow_greater = true
+alignment = 2
 
 [node name="Label5" type="Label" parent="MainUI/LeftPanel/HBoxContainer8"]
 layout_mode = 2
@@ -868,6 +922,7 @@ layout_mode = 2
 step = 0.1
 allow_greater = true
 allow_lesser = true
+alignment = 2
 
 [node name="Label3" type="Label" parent="MainUI/LeftPanel/HBoxContainer8"]
 layout_mode = 2
@@ -930,25 +985,105 @@ size_flags_horizontal = 3
 horizontal_alignment = 2
 
 [node name="Renderer" type="VBoxContainer" parent="MainUI"]
+custom_minimum_size = Vector2(49.32, 0)
 layout_mode = 2
 
-[node name="Renderer" type="PanelContainer" parent="MainUI/Renderer"]
+[node name="RendererContainer" type="BoxContainer" parent="MainUI/Renderer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(800, 800)
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="LeftRenderer" type="Control" parent="MainUI/Renderer/RendererContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.0
+
+[node name="Renderer" type="PanelContainer" parent="MainUI/Renderer/RendererContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_tkbio")
 
-[node name="BgColorRect" type="ColorRect" parent="MainUI/Renderer/Renderer"]
+[node name="BgColorRect" type="ColorRect" parent="MainUI/Renderer/RendererContainer/Renderer"]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 
-[node name="PixelCanvas" type="TextureRect" parent="MainUI/Renderer/Renderer"]
+[node name="PixelCanvas" type="TextureRect" parent="MainUI/Renderer/RendererContainer/Renderer"]
 unique_name_in_owner = true
 texture_filter = 1
 material = ExtResource("3_v52r1")
+custom_minimum_size = Vector2(780, 800)
 layout_mode = 2
 texture = SubResource("ViewportTexture_tkbio")
+expand_mode = 1
 metadata/_edit_lock_ = true
+
+[node name="RightRenderer" type="Control" parent="MainUI/Renderer/RendererContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainUI/Renderer"]
+layout_mode = 2
+
+[node name="Control2" type="Control" parent="MainUI/Renderer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.1
+
+[node name="Label" type="Label" parent="MainUI/Renderer/HBoxContainer"]
+layout_mode = 2
+text = "Model Rotation:"
+horizontal_alignment = 1
+
+[node name="ModelRotationSlider" type="HSlider" parent="MainUI/Renderer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+max_value = 360.0
+
+[node name="ModelRotationSpinBox" type="SpinBox" parent="MainUI/Renderer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+max_value = 360.0
+alignment = 2
+
+[node name="Control3" type="Control" parent="MainUI/Renderer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.1
+
+[node name="Label2" type="Label" parent="MainUI/Renderer/HBoxContainer"]
+layout_mode = 2
+text = "Step:"
+
+[node name="Step360" type="SpinBox" parent="MainUI/Renderer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+max_value = 360.0
+alignment = 2
+
+[node name="Export360" type="Button" parent="MainUI/Renderer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Export"
+
+[node name="Export360Abort" type="Button" parent="MainUI/Renderer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "x"
+
+[node name="Control" type="Control" parent="MainUI/Renderer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.1
 
 [node name="CanvasSizeLabel" type="Label" parent="MainUI/Renderer"]
 unique_name_in_owner = true
@@ -958,12 +1093,17 @@ theme_override_font_sizes/font_size = 16
 text = "Canvas size: 512 px"
 horizontal_alignment = 2
 
-[node name="Console" type="HBoxContainer" parent="MainUI/Renderer"]
+[node name="ConsoleContainer" type="HBoxContainer" parent="MainUI/Renderer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
-size_flags_vertical = 3
 theme_override_constants/separation = 10
+script = ExtResource("26_g6ha7")
 
-[node name="Console" type="TextEdit" parent="MainUI/Renderer/Console"]
+[node name="Control2" type="Control" parent="MainUI/Renderer/ConsoleContainer"]
+layout_mode = 2
+
+[node name="Console" type="TextEdit" parent="MainUI/Renderer/ConsoleContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -981,6 +1121,18 @@ empty_selection_clipboard_enabled = false
 wrap_mode = 1
 indent_wrapped_lines = true
 scroll_smooth = true
+
+[node name="ExpandConsole" type="Button" parent="MainUI/Renderer/ConsoleContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 0
+text = "Log"
+
+[node name="Control" type="Control" parent="MainUI/Renderer/ConsoleContainer"]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="MainUI/Renderer"]
+layout_mode = 2
 
 [node name="UI_Controls" type="VBoxContainer" parent="MainUI"]
 layout_mode = 2
@@ -1451,8 +1603,9 @@ text = "SAMPLE"
 [node name="Panel" type="Panel" parent="MainUI"]
 layout_mode = 2
 
-[node name="ModelsHandler" type="Node3D" parent="."]
+[node name="ModelsHandler" type="Node3D" parent="." node_paths=PackedStringArray("renderer")]
 script = ExtResource("11_8egxh")
+renderer = NodePath("..")
 
 [node name="ModelsSpawner" type="Node3D" parent="ModelsHandler"]
 unique_name_in_owner = true

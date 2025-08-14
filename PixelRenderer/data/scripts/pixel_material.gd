@@ -9,7 +9,8 @@ const CUSTOM_COLORS_FILE_PATH = "user://custom_colors.cfg"
 
 
 # UI Components
-@onready var target_pixel_count_spin: SpinBox = %Resolution
+@onready var target_x_pixel_count_spin: SpinBox = %ResolutionX
+@onready var target_y_pixel_count_spin: SpinBox = %ResolutionY
 @onready var color_steps_spin: SpinBox = %ColorStepsSpin
 @onready var edge_strength_slider: HSlider = %EdgeStrengthSlider
 @onready var sharpness_slider: HSlider = %SharpnessSlider
@@ -72,7 +73,8 @@ const SLSO8_COLORS = [
 
 # Default values for reset functionality
 const DEFAULT_VALUES = {
-	"target_pixel_count": 256,  # Match shader default
+	"target_x_pixel_count": 256,  # Match shader default
+	"target_y_pixel_count": 256,
 	"color_steps": 8,
 	"edge_strength": 0.5,
 	"sharpness": 1.0,
@@ -250,7 +252,8 @@ func _select_preset(preset_name: String):
 	var preset_data = all_presets[preset_name]
 	
 	# Apply preset values to UI controls
-	target_pixel_count_spin.value = preset_data.get("target_pixel_count", DEFAULT_VALUES.target_pixel_count)
+	target_x_pixel_count_spin.value = preset_data.get("target_x_pixel_count", DEFAULT_VALUES.target_x_pixel_count)
+	target_y_pixel_count_spin.value = preset_data.get("target_y_pixel_count", DEFAULT_VALUES.target_y_pixel_count)
 	color_steps_spin.value = preset_data.get("color_steps", DEFAULT_VALUES.color_steps)
 	edge_strength_slider.value = preset_data.get("edge_strength", DEFAULT_VALUES.edge_strength)
 	sharpness_slider.value = preset_data.get("sharpness", DEFAULT_VALUES.sharpness)
@@ -307,7 +310,8 @@ func _save_current_as_preset(preset_name: String):
 
 func _get_current_values() -> Dictionary:
 	return {
-		"target_pixel_count": int(target_pixel_count_spin.value),
+		"target_x_pixel_count": int(target_x_pixel_count_spin.value),
+		"target_y_pixel_count": int(target_y_pixel_count_spin.value),
 		"color_steps": int(color_steps_spin.value),
 		"edge_strength": edge_strength_slider.value,
 		"sharpness": sharpness_slider.value,
@@ -497,7 +501,8 @@ func _load_saved_values():
 	
 	if err == OK:
 		# Load saved values
-		target_pixel_count_spin.value = config.get_value("material", "target_pixel_count", DEFAULT_VALUES.target_pixel_count)
+		target_x_pixel_count_spin.value = config.get_value("material", "target_x_pixel_count", DEFAULT_VALUES.target_x_pixel_count)
+		target_y_pixel_count_spin.value = config.get_value("material", "target_y_pixel_count", DEFAULT_VALUES.target_y_pixel_count)
 		color_steps_spin.value = config.get_value("material", "color_steps", DEFAULT_VALUES.color_steps)
 		edge_strength_slider.value = config.get_value("material", "edge_strength", DEFAULT_VALUES.edge_strength)
 		sharpness_slider.value = config.get_value("material", "sharpness", DEFAULT_VALUES.sharpness)
@@ -537,7 +542,8 @@ func _load_saved_values():
 
 func _load_default_values():
 	# Set default values from DEFAULT_VALUES constant
-	target_pixel_count_spin.value = DEFAULT_VALUES.target_pixel_count
+	target_x_pixel_count_spin.value = DEFAULT_VALUES.target_x_pixel_count
+	target_y_pixel_count_spin.value = DEFAULT_VALUES.target_y_pixel_count
 	color_steps_spin.value = DEFAULT_VALUES.color_steps
 	edge_strength_slider.value = DEFAULT_VALUES.edge_strength
 	sharpness_slider.value = DEFAULT_VALUES.sharpness
@@ -580,7 +586,8 @@ func _save_current_values():
 	var config = ConfigFile.new()
 	
 	# Save current values to config
-	config.set_value("material", "target_pixel_count", int(target_pixel_count_spin.value))
+	config.set_value("material", "target_x_pixel_count", int(target_x_pixel_count_spin.value))
+	config.set_value("material", "target_y_pixel_count", int(target_y_pixel_count_spin.value))
 	config.set_value("material", "color_steps", int(color_steps_spin.value))
 	config.set_value("material", "edge_strength", edge_strength_slider.value)
 	config.set_value("material", "sharpness", sharpness_slider.value)
@@ -620,7 +627,8 @@ func _save_current_values():
 
 func _connect_signals():
 	# Connect spinbox and slider signals
-	target_pixel_count_spin.value_changed.connect(_on_target_pixel_count_changed)
+	target_x_pixel_count_spin.value_changed.connect(_on_target_pixel_count_changed)
+	target_y_pixel_count_spin.value_changed.connect(_on_target_pixel_count_changed)
 	color_steps_spin.value_changed.connect(_on_color_steps_changed)
 	edge_strength_slider.value_changed.connect(_on_edge_strength_changed)
 	sharpness_slider.value_changed.connect(_on_sharpness_changed)
@@ -671,7 +679,8 @@ func _connect_signals():
 
 func _apply_all_values():
 	# Apply all current values to the shader
-	PIXEL_MATERIAL.set_shader_parameter("target_pixel_count", int(target_pixel_count_spin.value))
+	PIXEL_MATERIAL.set_shader_parameter("target_x_pixel_count", int(target_x_pixel_count_spin.value))
+	PIXEL_MATERIAL.set_shader_parameter("target_y_pixel_count", int(target_y_pixel_count_spin.value))
 	PIXEL_MATERIAL.set_shader_parameter("color_steps", int(color_steps_spin.value))
 	PIXEL_MATERIAL.set_shader_parameter("edge_strength", edge_strength_slider.value)
 	PIXEL_MATERIAL.set_shader_parameter("sharpness", sharpness_slider.value)
