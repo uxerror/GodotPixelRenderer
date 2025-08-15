@@ -589,8 +589,8 @@ func _update_export_path_label():
 		export_dir_path.text = export_directory
 
 func _update_canvas_size_label():
-	var export_resolution_x = float(resolution_x.value)
-	var export_resolution_y = float(resolution_y.value)
+	#var export_resolution_x = float(resolution_x.value)
+	#var export_resolution_y = float(resolution_y.value)
 	#var base_size_x = float(BASE_CANVAS_SIZE.x)
 	#var base_size_y = float(BASE_CANVAS_SIZE.y)
 	#var scale_factor_x = export_resolution_x / base_size_x
@@ -599,7 +599,7 @@ func _update_canvas_size_label():
 	
 	#var scale_text = " | *" + str(scale_factor) + " upscaled"
 	
-	canvas_size_label.text = "Canvas base " + str(BASE_CANVAS_SIZE) + "px | Export resolution " + str(export_resolution_x) + "px :"+ str(export_resolution_y) + "px" 
+	canvas_size_label.text = "Canvas " + str(BASE_CANVAS_SIZE) + "px | Export Res. " + str(resolution_x.value) + "px :"+ str(resolution_y.value) + "px" 
 
 func _on_bg_color_toggled(button_pressed: bool):
 	_update_bg_color_visibility()

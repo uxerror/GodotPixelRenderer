@@ -11,9 +11,21 @@ A powerful **3D to Pixel Art Renderer** built with Godot 4.4+ that transforms 3D
 ![License](https://img.shields.io/badge/License-MIT-green.svg)
 ![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Linux%20%7C%20macOS-lightgrey)
 
-[![Watch on YouTube](https://img.shields.io/badge/YouTube-GFS%20Review-red?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/uRmB3MXzR_Q?si=s-mqPHxdC0RcUgZr)
+<div align="center">
+  <img src="PixelRenderer_screenshot.png" alt="Pixel Renderer Interface Screenshot" width="800">
+</div>
+
+---
 
 **Watch GFS - Games From Scratch review video on Youtube**
+
+<div align="center">
+  <a href="https://youtu.be/uRmB3MXzR_Q?si=s-mqPHxdC0RcUgZr" target="_blank">
+    <img src="https://img.youtube.com/vi/uRmB3MXzR_Q/maxresdefault.jpg" alt="GFS Review Video" style="border-radius: 8px;">
+  </a>
+</div>
+
+[![Watch on YouTube](https://img.shields.io/badge/YouTube-GFS%20Review-red?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/uRmB3MXzR_Q?si=s-mqPHxdC0RcUgZr)
 
 ## 👨‍💻 Developer
 
@@ -21,8 +33,6 @@ Created by **[bukkbeek](https://bukkbeek.github.io/)** - an independent game dev
 
 [![Portfolio](https://img.shields.io/badge/Portfolio-000000?style=for-the-badge&logo=github&logoColor=white)](https://bukkbeek.github.io/)
 [![Itch.io](https://img.shields.io/badge/Itch.io-FA5C5C?style=for-the-badge&logo=itchdotio&logoColor=white)](https://bukkbeek.itch.io/)
-
-[![Ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/bukkbeek)
 
 ## 📥 Downloads
 ### 🎮 Get Pixel Renderer
@@ -32,9 +42,6 @@ Created by **[bukkbeek](https://bukkbeek.github.io/)** - an independent game dev
 - **🆓 [GitHub](https://github.com/bukkbeek/GodotPixelRenderer)**: Free and open source
 - **💰 [Itch.io](https://bukkbeek.itch.io/pixel-renderer)**: Compiled version (support the developer!)
 
-<div align="center">
-  <img src="PixelRenderer_screenshot.png" alt="Pixel Renderer Interface Screenshot" width="800">
-</div>
 
 ## ✨ Features
 
@@ -120,6 +127,12 @@ Captures animation frames using SubViewport rendering with real-time pixel art e
 This project is licensed under the MIT License.
 
 ## 📋 Changelog
+
+### v1.2 - August 15, 2025
+- **✨ New Features:**
+  - Added 360 rendering and variable resolution support (by [Slavaitis](https://github.com/Slavaitis))
+- Gizmo location changed
+- Link to GitHub repo added
 
 ### v1.1.1 - July 25, 2025
 - **✨ New Features:**

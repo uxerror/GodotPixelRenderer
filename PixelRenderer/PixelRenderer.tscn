@@ -1,4 +1,4 @@
-[gd_scene load_steps=47 format=3 uid="uid://y4o6ttmh8hb4"]
+[gd_scene load_steps=50 format=3 uid="uid://y4o6ttmh8hb4"]
 
 [ext_resource type="Script" uid="uid://dhq1ywbp8nv12" path="res://PixelRenderer/data/scripts/PixelRenderer.gd" id="1_5ibnk"]
 [ext_resource type="Material" uid="uid://dn8s72rfum4y4" path="res://PixelRenderer/data/Gizmo.tres" id="2_6vt7t"]
@@ -7,8 +7,10 @@
 [ext_resource type="Texture2D" uid="uid://dt7vukhh5pm4c" path="res://PixelRenderer/data/icons/anim_play.png" id="4_6wj3c"]
 [ext_resource type="Texture2D" uid="uid://75s28vduypuu" path="res://PixelRenderer/data/icons/folder.png" id="4_sen5r"]
 [ext_resource type="Texture2D" uid="uid://d3o8isbpbhfrw" path="res://PixelRenderer.png" id="4_x1hdl"]
+[ext_resource type="Texture2D" uid="uid://75sv45xe6k1g" path="res://PixelRenderer/data/icons/github.png" id="5_fixve"]
 [ext_resource type="Texture2D" uid="uid://bm2gonmtadb85" path="res://PixelRenderer/data/icons/anim_pause.png" id="5_t0cwl"]
 [ext_resource type="Texture2D" uid="uid://b3p50ln0p60ss" path="res://PixelRenderer/data/icons/anim_stop.png" id="6_l23g4"]
+[ext_resource type="Script" uid="uid://c7ppmc6kj82x4" path="res://PixelRenderer/data/scripts/github_button.gd" id="6_wmb7r"]
 [ext_resource type="Texture2D" uid="uid://duc0vk1lm3pej" path="res://PixelRenderer/data/icons/arrow_up.png" id="7_klpv1"]
 [ext_resource type="Texture2D" uid="uid://sg16xfs24t3s" path="res://PixelRenderer/data/icons/anim_loop.png" id="7_wwtbg"]
 [ext_resource type="Texture2D" uid="uid://7k7x8v1o7p4r" path="res://PixelRenderer/data/icons/adj_move.png" id="8_6vt7t"]
@@ -31,6 +33,7 @@
 [ext_resource type="Script" uid="uid://bl5gdvkylmyg8" path="res://PixelRenderer/data/scripts/models_spawner.gd" id="22_t0cwl"]
 [ext_resource type="Texture2D" uid="uid://b1eg0gu4npj5r" path="res://PixelRenderer/data/icons/delete.png" id="23_ilx0h"]
 [ext_resource type="Script" uid="uid://d08tfpyxc4pu1" path="res://PixelRenderer/data/scripts/ConsoleController.gd" id="26_g6ha7"]
+[ext_resource type="Texture2D" uid="uid://ba0atb8hsd4yf" path="res://PixelRenderer/data/icons/export_terminate.png" id="26_owbk2"]
 [ext_resource type="PackedScene" uid="uid://6f4rhpj0da3q" path="res://Sample/Skeleton_Minion.glb" id="27_wwtbg"]
 [ext_resource type="Script" uid="uid://1oqvcrn8dkab" path="res://PixelRenderer/data/scripts/view_materials.gd" id="34_owbk2"]
 
@@ -203,24 +206,41 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 0
 
-[node name="Label5" type="Label" parent="MainUI/LeftPanel/HBoxContainer9/TitleBar"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MainUI/LeftPanel/HBoxContainer9/TitleBar"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Label5" type="Label" parent="MainUI/LeftPanel/HBoxContainer9/TitleBar/HBoxContainer"]
 custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
+size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 30
 theme_override_styles/normal = SubResource("StyleBoxFlat_5aq5t")
 text = "GODOT PIXEL RENDERER"
 horizontal_alignment = 1
 vertical_alignment = 2
 
-[node name="Label6" type="Label" parent="MainUI/LeftPanel/HBoxContainer9/TitleBar"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MainUI/LeftPanel/HBoxContainer9/TitleBar"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Label6" type="Label" parent="MainUI/LeftPanel/HBoxContainer9/TitleBar/HBoxContainer2"]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
+size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.396889, 0.396889, 0.396889, 1)
 theme_override_font_sizes/font_size = 20
 theme_override_styles/normal = SubResource("StyleBoxFlat_5aq5t")
-text = "3D to PixelArt toolkit"
+text = "   3D to PixelArt toolkit"
 horizontal_alignment = 1
 uppercase = true
+
+[node name="GitHubButton" type="Button" parent="MainUI/LeftPanel/HBoxContainer9/TitleBar/HBoxContainer2"]
+custom_minimum_size = Vector2(36, 36)
+layout_mode = 2
+icon = ExtResource("5_fixve")
+expand_icon = true
+script = ExtResource("6_wmb7r")
 
 [node name="HSeparator4" type="HSeparator" parent="MainUI/LeftPanel"]
 layout_mode = 2
@@ -362,7 +382,7 @@ layout_mode = 2
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_l23g4")
-text = " OUTPUT "
+text = " OUTPUT [MANUAL]"
 horizontal_alignment = 1
 vertical_alignment = 2
 
@@ -440,6 +460,7 @@ layout_mode = 2
 unique_name_in_owner = true
 custom_minimum_size = Vector2(128, 0)
 layout_mode = 2
+tooltip_text = "Export from preview angle"
 text = "EXPORT"
 icon = ExtResource("9_l23g4")
 expand_icon = true
@@ -447,6 +468,57 @@ expand_icon = true
 [node name="Label3" type="Label" parent="MainUI/LeftPanel/ExportOptions4"]
 custom_minimum_size = Vector2(3, 0)
 layout_mode = 2
+
+[node name="HBoxContainer10" type="HBoxContainer" parent="MainUI/LeftPanel"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="MainUI/LeftPanel/HBoxContainer10"]
+custom_minimum_size = Vector2(36, 36)
+layout_mode = 2
+texture = ExtResource("10_x1hdl")
+expand_mode = 2
+stretch_mode = 4
+
+[node name="ModelRotationSlider" type="HSlider" parent="MainUI/LeftPanel/HBoxContainer10"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+max_value = 360.0
+
+[node name="ModelRotationSpinBox" type="SpinBox" parent="MainUI/LeftPanel/HBoxContainer10"]
+unique_name_in_owner = true
+layout_mode = 2
+max_value = 360.0
+alignment = 2
+
+[node name="Label2" type="Label" parent="MainUI/LeftPanel/HBoxContainer10"]
+layout_mode = 2
+text = " Step:"
+uppercase = true
+
+[node name="Step360" type="SpinBox" parent="MainUI/LeftPanel/HBoxContainer10"]
+unique_name_in_owner = true
+layout_mode = 2
+max_value = 360.0
+alignment = 2
+
+[node name="Export360" type="Button" parent="MainUI/LeftPanel/HBoxContainer10"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+tooltip_text = "Export 360° Animation Frames"
+text = "EXPORT"
+icon = ExtResource("9_l23g4")
+expand_icon = true
+
+[node name="Export360Abort" type="Button" parent="MainUI/LeftPanel/HBoxContainer10"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(36, 0)
+layout_mode = 2
+tooltip_text = "Terminate Export"
+icon = ExtResource("26_owbk2")
+expand_icon = true
 
 [node name="ProgressBar" type="ProgressBar" parent="MainUI/LeftPanel"]
 unique_name_in_owner = true
@@ -936,54 +1008,6 @@ tooltip_text = "Reset Rim light"
 icon = ExtResource("9_ilx0h")
 expand_icon = true
 
-[node name="HSeparator6" type="HSeparator" parent="MainUI/LeftPanel"]
-layout_mode = 2
-
-[node name="Gizmo" type="HBoxContainer" parent="MainUI/LeftPanel"]
-layout_mode = 2
-theme_override_constants/separation = 20
-script = ExtResource("19_ilx0h")
-
-[node name="Label7" type="Label" parent="MainUI/LeftPanel/Gizmo"]
-layout_mode = 2
-size_flags_horizontal = 3
-horizontal_alignment = 2
-
-[node name="Button_Axis" type="Button" parent="MainUI/LeftPanel/Gizmo"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(120, 40)
-layout_mode = 2
-text = "AXIS"
-icon = ExtResource("14_ilx0h")
-expand_icon = true
-
-[node name="Button_Origin" type="Button" parent="MainUI/LeftPanel/Gizmo"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(140, 40)
-layout_mode = 2
-text = "ORIGIN"
-icon = ExtResource("15_x1hdl")
-expand_icon = true
-
-[node name="Button_Floor" type="Button" parent="MainUI/LeftPanel/Gizmo"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(125, 40)
-layout_mode = 2
-text = "FLOOR"
-icon = ExtResource("16_5xf31")
-expand_icon = true
-
-[node name="FloorColorPicker" type="ColorPickerButton" parent="MainUI/LeftPanel/Gizmo"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(36, 36)
-layout_mode = 2
-color = Color(1, 1, 1, 1)
-
-[node name="Label8" type="Label" parent="MainUI/LeftPanel/Gizmo"]
-layout_mode = 2
-size_flags_horizontal = 3
-horizontal_alignment = 2
-
 [node name="Renderer" type="VBoxContainer" parent="MainUI"]
 custom_minimum_size = Vector2(49.32, 0)
 layout_mode = 2
@@ -1029,69 +1053,68 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MainUI/Renderer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MainUI/Renderer"]
 layout_mode = 2
 
-[node name="Control2" type="Control" parent="MainUI/Renderer/HBoxContainer"]
+[node name="Gizmo" type="HBoxContainer" parent="MainUI/Renderer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+script = ExtResource("19_ilx0h")
+
+[node name="Label7" type="Label" parent="MainUI/Renderer/Gizmo"]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_stretch_ratio = 0.1
+horizontal_alignment = 2
 
-[node name="Label" type="Label" parent="MainUI/Renderer/HBoxContainer"]
-layout_mode = 2
-text = "Model Rotation:"
-horizontal_alignment = 1
-
-[node name="ModelRotationSlider" type="HSlider" parent="MainUI/Renderer/HBoxContainer"]
+[node name="Button_Axis" type="Button" parent="MainUI/Renderer/Gizmo"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 40)
+layout_mode = 2
+text = "AXIS"
+icon = ExtResource("14_ilx0h")
+expand_icon = true
+
+[node name="Button_Origin" type="Button" parent="MainUI/Renderer/Gizmo"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(140, 40)
+layout_mode = 2
+text = "ORIGIN"
+icon = ExtResource("15_x1hdl")
+expand_icon = true
+
+[node name="Button_Floor" type="Button" parent="MainUI/Renderer/Gizmo"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(125, 40)
+layout_mode = 2
+text = "FLOOR"
+icon = ExtResource("16_5xf31")
+expand_icon = true
+
+[node name="FloorColorPicker" type="ColorPickerButton" parent="MainUI/Renderer/Gizmo"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(36, 36)
+layout_mode = 2
+color = Color(1, 1, 1, 1)
+
+[node name="Label8" type="Label" parent="MainUI/Renderer/Gizmo"]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_vertical = 4
-max_value = 360.0
+horizontal_alignment = 2
 
-[node name="ModelRotationSpinBox" type="SpinBox" parent="MainUI/Renderer/HBoxContainer"]
-unique_name_in_owner = true
+[node name="HSeparator6" type="HSeparator" parent="MainUI/Renderer"]
 layout_mode = 2
-max_value = 360.0
-alignment = 2
-
-[node name="Control3" type="Control" parent="MainUI/Renderer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_stretch_ratio = 0.1
-
-[node name="Label2" type="Label" parent="MainUI/Renderer/HBoxContainer"]
-layout_mode = 2
-text = "Step:"
-
-[node name="Step360" type="SpinBox" parent="MainUI/Renderer/HBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-max_value = 360.0
-alignment = 2
-
-[node name="Export360" type="Button" parent="MainUI/Renderer/HBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Export"
-
-[node name="Export360Abort" type="Button" parent="MainUI/Renderer/HBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "x"
-
-[node name="Control" type="Control" parent="MainUI/Renderer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_stretch_ratio = 0.1
 
 [node name="CanvasSizeLabel" type="Label" parent="MainUI/Renderer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.479183, 0.479183, 0.479183, 1)
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 24
 text = "Canvas size: 512 px"
 horizontal_alignment = 2
+clip_text = true
+
+[node name="HSeparator7" type="HSeparator" parent="MainUI/Renderer"]
+layout_mode = 2
 
 [node name="ConsoleContainer" type="HBoxContainer" parent="MainUI/Renderer"]
 unique_name_in_owner = true
@@ -1126,7 +1149,7 @@ scroll_smooth = true
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 0
-text = "Log"
+text = "LOG"
 
 [node name="Control" type="Control" parent="MainUI/Renderer/ConsoleContainer"]
 layout_mode = 2
