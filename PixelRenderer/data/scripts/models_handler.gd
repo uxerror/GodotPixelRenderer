@@ -1,268 +1,208 @@
 extends Node3D
-@export var renderer: Node3D
 
+signal added_checkpoint(index: int)
 
-@onready var x_pos_spin: SpinBox = %XPosSpin
-@onready var y_pos_spin: SpinBox = %YPosSpin
-@onready var z_pos_spin: SpinBox = %ZPosSpin
+# --- Constants ---
+const DEFAULT_ROTATION_DELTA := 45.0
+const DEFAULT_CAMERA_POS := Vector3(0, 1, 55)
+const DEFAULT_CAMERA_ROT := Vector3.ZERO
+const DEFAULT_ZOOM := 4.0
 
-@onready var camera: Camera3D = %Camera
-@onready var zoom_spin: SpinBox = %CameraZoomSpin
-@onready var reset_button: Button = %PosResetButton
-
-@onready var x_rot_spin: SpinBox = %XRotSpin
-@onready var y_rot_spin: SpinBox = %YRotSpin
-@onready var z_rot_spin: SpinBox = %ZRotSpin
-@onready var button_up: Button = %Button_Up
-@onready var button_down: Button = %Button_Down
-@onready var button_left: Button = %Button_Left
-@onready var button_right: Button = %Button_Right
-@onready var rot_reset_button: Button = %RotResetButton
-@onready var zoom_reset_button: Button = %ZoomResetButton
-
-@onready var models_spawner: Node3D = %ModelsSpawner
-@onready var model_rotate_slider: HSlider = %ModelRotationSlider
-@onready var model_rotate_spinbox: SpinBox = %ModelRotationSpinBox
-
-@onready var steps_360_render: SpinBox = %Step360
-@onready var button_360_render: Button = %Export360
-@onready var button_360_render_abort: Button = %Export360Abort
-
-var current_step: int = 0
-var total_steps: int = 0
-var angle_increment: float = 0.0
-var base_prefix: String = ""
-var is_exporting_360: bool = false
-var is_export_aborted: bool = false
-
-const ADJUSTMENT_CONFIG_FILE= "user://adjustment_config.cfg"
-
-func _ready():
-	# Set default values
-	#_reset_to_defaults()
-	_initialize_controls()
-	_apply_default_settings()
-	
-	# Connect spinbox value changes to update position and camera
-	x_pos_spin.value_changed.connect(_on_position_changed)
-	y_pos_spin.value_changed.connect(_on_position_changed)
-	z_pos_spin.value_changed.connect(_on_position_changed)
-	zoom_spin.value_changed.connect(_on_zoom_changed)
-	reset_button.pressed.connect(_reset_to_defaults)
-	zoom_reset_button.pressed.connect(_reset_zoom)
-	
-	# Connect rotation spinboxes to update rotation
-	x_rot_spin.value_changed.connect(_on_rotation_changed)
-	y_rot_spin.value_changed.connect(_on_rotation_changed)
-	z_rot_spin.value_changed.connect(_on_rotation_changed)
-	
-	# Connect preset rotation buttons
-	button_up.pressed.connect(_on_rotate_up)
-	button_down.pressed.connect(_on_rotate_down)
-	button_left.pressed.connect(_on_rotate_left)
-	button_right.pressed.connect(_on_rotate_right)
-	rot_reset_button.pressed.connect(_reset_rotation)
-	
-	model_rotate_slider.value_changed.connect(_on_model_rotated)
-	model_rotate_spinbox.value_changed.connect(_on_model_rotated)
-	
-	button_360_render.pressed.connect(_on_360_export_pressed)
-	button_360_render_abort.pressed.connect(_on_360_export_abort_pressed)
-	
-	renderer.single_export_finished.connect(_on_single_export_finished)
-	
-func _on_360_export_abort_pressed():
-	if is_exporting_360:
-		is_export_aborted = true
-		
-func _on_360_export_pressed():
-	if is_exporting_360:
-		return
-		
-	angle_increment = steps_360_render.value
-	if angle_increment == 0:
-		return
-
-	is_exporting_360 = true
-	is_export_aborted = false
-	current_step = 0
-	total_steps = int(360.0 / angle_increment)
-	base_prefix = renderer.prefix_text.text.strip_edges()
-	
-	process_next_export_step()
-
-func process_next_export_step():
-	if current_step >= total_steps or is_export_aborted:
-		print("Экспорт 360 завершен или прерван.")
-		is_exporting_360 = false
-		is_export_aborted = false
-		renderer.prefix_text.text = base_prefix
-		return
-
-	var current_angle = current_step * angle_increment
-	
-	model_rotate_slider.value = current_angle
-	
-	if base_prefix.is_empty():
-		renderer.prefix_text.text = "frame_" + str(current_angle)
-	else:
-		renderer.prefix_text.text = base_prefix + "_" + str(current_angle)
-	
-	if renderer.export_directory == "":
-		renderer.start_export()
-		while renderer.export_directory == "":
-			await get_tree().process_frame
-	
-	renderer.start_export()
-	
-const DEFAULT_SETTINGS = {
-	"position": {
-		"x": 0.0,
-		"y": 0.0,
-		"z": 0.0
-	},
-	"rotation": {
-		"x": 0.0,
-		"y": 0.0,
-		"z": 0.0
-	},
-	"zoom": {
-		"value": 4.0
-	}
+## Camera presets (position + rotation)
+const CAMERA_PRESETS := {
+	"Default":   { pos = DEFAULT_CAMERA_POS, rot = DEFAULT_CAMERA_ROT },
+	"Front":     { pos = Vector3(0, 1, 55),  rot = Vector3(0, 0, 0) },
+	"Left":      { pos = Vector3(-55, 1, 0), rot = Vector3(0, -90, 0) },
+	"Right":     { pos = Vector3(55, 1, 0),  rot = Vector3(0, 90, 0) },
+	"Top":       { pos = Vector3(0, 55, 0),  rot = Vector3(-90, 0, 0) },
+	"Isometric": { pos = Vector3(0, 56, 55), rot = Vector3(-45, 0, 0) }
 }
 
-var infinity = 999999999
-func _initialize_controls():
-	# Initialize spin boxes with proper ranges
-	x_pos_spin.min_value = -infinity
-	x_pos_spin.max_value = infinity
-	x_pos_spin.step = 0.1
-	
-	y_pos_spin.min_value = -infinity
-	y_pos_spin.max_value = infinity
-	y_pos_spin.step = 0.1
-	
-	z_pos_spin.min_value = -infinity
-	z_pos_spin.max_value = infinity
-	z_pos_spin.step = 0.1
-	
-	x_rot_spin.min_value = -infinity
-	x_rot_spin.max_value = infinity
-	x_rot_spin.step = 0.1
-	
-	y_rot_spin.min_value = -infinity
-	y_rot_spin.max_value = infinity
-	y_rot_spin.step = 0.1
-	
-	z_rot_spin.min_value = -infinity
-	z_rot_spin.max_value = infinity
-	z_rot_spin.step = 0.1
+# --- UI groups (model + camera controls) ---
+@onready var model := {
+	pos = { x = %XPosSpin, y = %YPosSpin, z = %ZPosSpin },
+	rot = { x = %XRotSpin, y = %YRotSpin, z = %ZRotSpin },
+	buttons = { up = %Button_Model_Up, down = %Button_Model_Down, left = %Button_Model_Left, right = %Button_Model_Right },
+	delta_spin = %RotationModelDeltaSpinBox,
+	rot_reset = %RotResetButton,
+	pos_reset = %PosResetButton
+}
 
-func _apply_default_settings():
-	var config = ConfigFile.new()
-	config.load(ADJUSTMENT_CONFIG_FILE)
-	
-	# Apply default settings to lights
-	x_pos_spin.value = config.get_value("position", "x", DEFAULT_SETTINGS.position.x)
-	y_pos_spin.value = config.get_value("position", "y", DEFAULT_SETTINGS.position.y)
-	z_pos_spin.value = config.get_value("position", "z", DEFAULT_SETTINGS.position.z)
-	
-	x_rot_spin.value = config.get_value("rotation", "x", DEFAULT_SETTINGS.rotation.x)
-	y_rot_spin.value = config.get_value("rotation", "y", DEFAULT_SETTINGS.rotation.y)
-	z_rot_spin.value = config.get_value("rotation", "z", DEFAULT_SETTINGS.rotation.z)
-	
-	zoom_spin.value = config.get_value("zoom", "value", DEFAULT_SETTINGS.zoom.value)
-	
-	_on_position_changed(0)
-	_on_rotation_changed(0)
-	_on_zoom_changed(zoom_spin.value)
-	
-func _save_settings():
-	var config = ConfigFile.new()
-	
-	# Save Key Light settings
-	config.set_value("position", "x", x_pos_spin.value)
-	config.set_value("position", "y", y_pos_spin.value)
-	config.set_value("position", "z", z_pos_spin.value)
-	
-	config.set_value("rotation", "x", x_rot_spin.value)
-	config.set_value("rotation", "y", y_rot_spin.value)
-	config.set_value("rotation", "z", z_rot_spin.value)
-	
-	config.set_value("zoom", "value", zoom_spin.value)
-	
-	var error = config.save(ADJUSTMENT_CONFIG_FILE)
-	if error != OK:
-		print("Failed to save adjustment settings: ", error)
-	
-func _on_single_export_finished():
-	# Renderer сообщил, что закончил. Переходим к следующему шагу.
-	current_step += 1
-	process_next_export_step()
+@onready var camera_ctl := {
+	pos = { x = %XPosCameraSpin, y = %YPosCameraSpin, z = %ZPosCameraSpin },
+	rot = { x = %XRotCameraSpin, y = %YRotCameraSpin, z = %ZRotCameraSpin },
+	buttons = { up = %Button_Camera_Up, down = %Button_Camera_Down, left = %Button_Camera_Left, right = %Button_Camera_Right },
+	delta_spin = %RotationCameraDeltaSpinBox,
+	rot_reset = %RotCameraResetButton,
+	pos_reset = %PosCameraResetButton,
+	zoom_spin = %CameraZoomSpin,
+	zoom_reset = %ZoomResetButton,
+	preset_select = %CameraConfigOptionButton
+}
 
-func _on_model_rotated(_value):
-	model_rotate_spinbox.value = _value;
-	model_rotate_slider.value = _value;
-	var rotation_in_radians = deg_to_rad(_value)
-	models_spawner.rotation.y = rotation_in_radians
+@onready var camera: Camera3D = %Camera
+@onready var add_checkpoint_button: Button = %AddModelCameraConfigButton   # кнопка для сохранения конфигурации
 
-func _on_position_changed(_value):
-	# Update position when any spinbox value changes
-	position = Vector3(x_pos_spin.value, y_pos_spin.value, z_pos_spin.value)
-	_save_settings()
+# --- Exported properties ---
+@export var rotation_model_delta: float = DEFAULT_ROTATION_DELTA
+@export var rotation_camera_delta: float = DEFAULT_ROTATION_DELTA
 
-func _on_rotation_changed(_value):
-	# Update rotation when any rotation spinbox value changes
-	rotation_degrees = Vector3(x_rot_spin.value, y_rot_spin.value, z_rot_spin.value)
-	_save_settings()
+# --- Data storage ---
+var checkpoints: Array = []   # массив точек сохранения
 
-func _on_rotate_up():
-	# Rotate up by 90 degrees on X axis
-	x_rot_spin.value += 90.0
-	_on_rotation_changed(0)
+# --- Delta getters/setters ---
+func _get_rotation_model_delta() -> float: return rotation_model_delta
+func _set_rotation_model_delta(v: float) -> void: rotation_model_delta = v
 
-func _on_rotate_down():
-	# Rotate down by 90 degrees on X axis
-	x_rot_spin.value -= 90.0
-	_on_rotation_changed(0)
+func _get_rotation_camera_delta() -> float: return rotation_camera_delta
+func _set_rotation_camera_delta(v: float) -> void: rotation_camera_delta = v
 
-func _on_rotate_left():
-	# Rotate left by 90 degrees on Y axis
-	y_rot_spin.value -= 90.0
-	_on_rotation_changed(0)
+# --- Ready ---
+func _ready() -> void:
+	# Init model controls
+	_init_controls(model, _update_model_position, _update_model_rotation,
+		Callable(self, "_get_rotation_model_delta"), Callable(self, "_set_rotation_model_delta"),
+		_reset_model_position, _reset_model_rotation)
 
-func _on_rotate_right():
-	# Rotate right by 90 degrees on Y axis
-	y_rot_spin.value += 90.0
-	_on_rotation_changed(0)
+	# Init camera controls
+	_init_controls(camera_ctl, _update_camera_position, _update_camera_rotation,
+		Callable(self, "_get_rotation_camera_delta"), Callable(self, "_set_rotation_camera_delta"),
+		_reset_camera_position, _reset_camera_rotation)
 
-func _reset_rotation():
-	# Reset rotation to (0,0,0)
-	x_rot_spin.value = 0.0
-	y_rot_spin.value = 0.0
-	z_rot_spin.value = 0.0
-	rotation_degrees = Vector3(0.0, 0.0, 0.0)
-	_save_settings()
+	# Zoom and presets
+	camera_ctl.zoom_spin.value_changed.connect(_update_zoom)
+	camera_ctl.zoom_reset.pressed.connect(_reset_zoom)
+	_setup_camera_presets()
+	camera_ctl.preset_select.item_selected.connect(_on_camera_preset_selected)
 
-func _on_zoom_changed(_value):
-	if _value > 0.0:
-		camera.size = _value
-		zoom_spin.value = _value
-		_save_settings()
+	# Save button
+	add_checkpoint_button.pressed.connect(_on_add_checkpoint_pressed)
 
-func _reset_to_defaults():
-	# Set default values: position (0,0,0)
-	x_pos_spin.value = 0.0
-	y_pos_spin.value = 0.0
-	z_pos_spin.value = 0.0
+	reset_all()
 
-	# Update position
-	position = Vector3(0.0, 0.0, 0.0)
-	_save_settings()
+# --- Initialize a control group (model or camera) ---
+func _init_controls(group, update_pos, update_rot, get_delta: Callable, set_delta: Callable, reset_pos, reset_rot) -> void:
+	for axis in group.pos: group.pos[axis].value_changed.connect(update_pos)
+	for axis in group.rot: group.rot[axis].value_changed.connect(update_rot)
 
+	group.buttons.up.pressed.connect(func(): _rotate_spinbox(group.rot.x,  get_delta.call(), update_rot))
+	group.buttons.down.pressed.connect(func(): _rotate_spinbox(group.rot.x, -get_delta.call(), update_rot))
+	group.buttons.left.pressed.connect(func(): _rotate_spinbox(group.rot.y, -get_delta.call(), update_rot))
+	group.buttons.right.pressed.connect(func(): _rotate_spinbox(group.rot.y,  get_delta.call(), update_rot))
 
-func _reset_zoom():
-	# Reset zoom to default value
-	zoom_spin.value = 4.0
-	camera.size = 4.0
-	_save_settings()
+	group.delta_spin.value_changed.connect(set_delta)
+	group.pos_reset.pressed.connect(reset_pos)
+	group.rot_reset.pressed.connect(reset_rot)
+
+# --- Reset all state ---
+func reset_all() -> void:
+	_reset_model_position(); _reset_model_rotation()
+	_reset_camera_position(); _reset_camera_rotation()
+	_reset_zoom()
+
+# --- Helpers ---
+func _rotate_spinbox(spinbox: SpinBox, delta: float, callback: Callable) -> void:
+	spinbox.value += delta
+	callback.call(0)
+
+func _vector_from_spinboxes(spin_group: Dictionary) -> Vector3:
+	return Vector3(spin_group.x.value, spin_group.y.value, spin_group.z.value)
+
+# --- Model logic ---
+func _update_model_position(_v: float = 0) -> void: position = _vector_from_spinboxes(model.pos)
+func _update_model_rotation(_v: float = 0) -> void: rotation_degrees = _vector_from_spinboxes(model.rot)
+func _reset_model_position() -> void: for a in model.pos: model.pos[a].value = 0; _update_model_position()
+func _reset_model_rotation() -> void: for a in model.rot: model.rot[a].value = 0; _update_model_rotation()
+
+# --- Camera logic ---
+func _update_camera_position(_v: float = 0) -> void:
+	camera.position = DEFAULT_CAMERA_POS + _vector_from_spinboxes(camera_ctl.pos)
+
+func _update_camera_rotation(_v: float = 0) -> void:
+	camera.rotation_degrees = DEFAULT_CAMERA_ROT + _vector_from_spinboxes(camera_ctl.rot)
+
+func _reset_camera_position() -> void: for a in camera_ctl.pos: camera_ctl.pos[a].value = 0; _update_camera_position()
+func _reset_camera_rotation() -> void: for a in camera_ctl.rot: camera_ctl.rot[a].value = 0; _update_camera_rotation()
+
+# --- Zoom logic ---
+func _update_zoom(v: float) -> void: if v > 0: camera.size = v
+func _reset_zoom() -> void: camera_ctl.zoom_spin.value = DEFAULT_ZOOM; camera.size = DEFAULT_ZOOM
+
+# --- Camera presets ---
+func _setup_camera_presets() -> void:
+	camera_ctl.preset_select.clear()
+	for n in CAMERA_PRESETS: camera_ctl.preset_select.add_item(n)
+
+func _on_camera_preset_selected(i: int) -> void:
+	var p = CAMERA_PRESETS[camera_ctl.preset_select.get_item_text(i)]
+	camera.position = p.pos
+	camera.rotation_degrees = p.rot
+	_sync_camera_ui()
+
+func _sync_camera_ui() -> void:
+	var pos_offset = camera.position - DEFAULT_CAMERA_POS
+	camera_ctl.pos.x.value = pos_offset.x
+	camera_ctl.pos.y.value = pos_offset.y
+	camera_ctl.pos.z.value = pos_offset.z
+
+	var rot_offset = camera.rotation_degrees - DEFAULT_CAMERA_ROT
+	camera_ctl.rot.x.value = rot_offset.x
+	camera_ctl.rot.y.value = rot_offset.y
+	camera_ctl.rot.z.value = rot_offset.z
+
+# --- Save/Load state ---
+func get_state() -> Dictionary:
+	return {
+		"model": {
+			"position": get_model_position(),
+			"rotation": get_model_rotation()
+		},
+		"camera": {
+			"position": get_camera_position(),
+			"rotation": get_camera_rotation(),
+			"zoom": camera.size
+		}
+	}
+
+func set_state(state: Dictionary) -> void:
+	if state.has("model"):
+		if state.model.has("position"):
+			position = state.model.position
+			for axis in model.pos:
+				model.pos[axis].value = position[axis]
+		if state.model.has("rotation"):
+			rotation_degrees = state.model.rotation
+			for axis in model.rot:
+				model.rot[axis].value = rotation_degrees[axis]
+
+	if state.has("camera"):
+		if state.camera.has("position"):
+			camera.position = state.camera.position
+			var pos_offset = camera.position - DEFAULT_CAMERA_POS
+			camera_ctl.pos.x.value = pos_offset.x
+			camera_ctl.pos.y.value = pos_offset.y
+			camera_ctl.pos.z.value = pos_offset.z
+
+		if state.camera.has("rotation"):
+			camera.rotation_degrees = state.camera.rotation
+			var rot_offset = camera.rotation_degrees - DEFAULT_CAMERA_ROT
+			camera_ctl.rot.x.value = rot_offset.x
+			camera_ctl.rot.y.value = rot_offset.y
+			camera_ctl.rot.z.value = rot_offset.z
+
+		if state.camera.has("zoom"):
+			camera.size = state.camera.zoom
+			camera_ctl.zoom_spin.value = state.camera.zoom
+
+# --- Button logic ---
+func _on_add_checkpoint_pressed() -> void:
+	checkpoints.append(get_state())
+	var index = checkpoints.size() - 1
+	added_checkpoint.emit(index)
+	print("Checkpoint saved! Total:", checkpoints.size())
+
+# --- Simple getters ---
+func get_model_position() -> Vector3: return position
+func get_model_rotation() -> Vector3: return rotation_degrees
+func get_camera_position() -> Vector3: return camera.position
+func get_camera_rotation() -> Vector3: return camera.rotation_degrees

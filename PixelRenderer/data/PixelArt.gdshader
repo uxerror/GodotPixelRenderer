@@ -1,8 +1,7 @@
 shader_type canvas_item;
 
 // Pixelation
-uniform int target_x_pixel_count : hint_range(8, 800) = 256;
-uniform int target_y_pixel_count : hint_range(8, 800) = 256;
+uniform int target_pixel_count : hint_range(8, 800) = 256;
 
 // Color reduction
 uniform int color_steps : hint_range(2, 32) = 8;
@@ -208,24 +207,12 @@ void fragment() {
     // Apply pixelation
     vec2 pixel_uv = UV;
 
-    //if (target_x_pixel_count < int(texture_size.x) || target_y_pixel_count < int(texture_size.y)) {
-		//
-		//
-		////// Calculate how many source pixels map to one target pixel
-        ////float scale_factor = texture_size.x / float(target_x_pixel_count);
-        ////vec2 pixel_size = vec2(scale_factor) / texture_size;
-        ////pixel_uv = floor(UV / pixel_size) * pixel_size + pixel_size * 0.5;
-    //}
-	
-	float scale_x = texture_size.x / float(target_x_pixel_count);
-	float scale_y = texture_size.y / float(target_y_pixel_count);
-
-	float scale_factor = max(scale_x, scale_y);
-
-	if (scale_factor > 1.0) {
-		vec2 pixel_size = vec2(scale_factor) / texture_size;
-		pixel_uv = floor(UV / pixel_size) * pixel_size + pixel_size * 0.5;
-	}
+    if (target_pixel_count < int(texture_size.x)) {
+        // Calculate how many source pixels map to one target pixel
+        float scale_factor = texture_size.x / float(target_pixel_count);
+        vec2 pixel_size = vec2(scale_factor) / texture_size;
+        pixel_uv = floor(UV / pixel_size) * pixel_size + pixel_size * 0.5;
+    }
 
     // Get base color
     vec4 tex_color = texture(TEXTURE, pixel_uv);
