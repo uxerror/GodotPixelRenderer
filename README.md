@@ -38,9 +38,11 @@ Created by **[bukkbeek](https://bukkbeek.github.io/)** - an independent game dev
 ### 🎮 Get Pixel Renderer
 [![GitHub](https://img.shields.io/badge/GitHub-Free%20%26%20Open%20Source-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/bukkbeek/GodotPixelRenderer)
 [![Itch.io](https://img.shields.io/badge/Itch.io-Compiled%20Version-FA5C5C?style=for-the-badge&logo=itchdotio&logoColor=white)](https://bukkbeek.itch.io/pixel-renderer)
+[![AUR](https://img.shields.io/aur/version/godot-pixel-renderer-git?style=for-the-badge&logo=archlinux&logoColor=white)](https://aur.archlinux.org/packages/godot-pixel-renderer-git)
 
 - **🆓 [GitHub](https://github.com/bukkbeek/GodotPixelRenderer)**: Free and open source
 - **💰 [Itch.io](https://bukkbeek.itch.io/pixel-renderer)**: Compiled version (support the developer!)
+- **🆓 [AUR](https://aur.archlinux.org/packages/godot-pixel-renderer-git)**: Free and open source, for Arch Linux users
 
 
 ## ✨ Features
