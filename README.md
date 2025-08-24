@@ -41,7 +41,8 @@ This fork is maintained independently to provide updated features for Godot 4.5+
 
 * Frame-by-frame animation export to PNG sequences
 * Custom frame ranges, variable FPS, resolution scaling
-* GLB/GLTF model support with animation playback
+* GLB/GLTF/FBX model support with animation playback
+* Import texture
 * Orthographic camera with positioning, rotation, and **preset views**
 * **Checkpoint system**:
 
