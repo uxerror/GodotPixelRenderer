@@ -38,6 +38,9 @@ extends Node3D
 @onready var save_point_grid_container: GridContainer = %SavePointGridContainer
 @onready var models_handler: Node3D = %ModelsHandler
 
+@onready var model_control_button_panel: GridContainer = %ModelControlButtonPanel
+@onready var viewport_background_color_rect: ColorRect = %ViewportBackgroundColorRect
+
 var export_directory: String = ""
 var is_exporting: bool = false
 var current_export_frame: int = 0
@@ -179,23 +182,25 @@ func _find_animation_player(node: Node) -> AnimationPlayer:
 	return null
 
 func _start_export():
+	model_control_button_panel.hide()
+	viewport_background_color_rect.hide()
 	total_checkpoints = models_handler.checkpoints.size()
+	
 	if total_checkpoints == 0:
-		_update_progress("No checkpoints found! Please add at least one.")
-		return
+		_update_progress("No checkpoints found, exporting current state only")
+		total_checkpoints = 1
 	
 	if export_directory == "":
 		_update_progress("No export directory selected")
 		return
 		
-	# Get frame range from models_spawner UI instead of hardcoded values
+	# Получаем диапазон кадров
 	var actual_start_frame = start_frame
 	var actual_end_frame = end_frame
 	
 	checkpoint_index = 0
 	
 	if models_spawner:
-		# Try to get the frame values from models_spawner directly (it has start_spin and end_spin as @onready vars)
 		if models_spawner.has_method("get") and models_spawner.get("start_spin") != null and models_spawner.get("end_spin") != null:
 			actual_start_frame = int(models_spawner.start_spin.value)
 			actual_end_frame = int(models_spawner.end_spin.value)
@@ -207,39 +212,29 @@ func _start_export():
 		_update_progress("Invalid frame range: start_frame must be less than end_frame")
 		return
 	
-	# Calculate frame skip based on FPS (baseline 30 FPS)
+	# FPS skip
 	var frame_skip = int(30.0 / float(fps))
 	if frame_skip < 1:
 		frame_skip = 1
 	
 	_update_progress("Export FPS: " + str(fps) + " (will render every " + str(frame_skip) + " frame(s) from 30 FPS baseline)")
 	
-	# Find the animation player in the loaded model
 	if models_spawner:
 		var loaded_model = models_spawner.get_loaded_model()
 		if loaded_model:
 			animation_player = _find_animation_player(loaded_model)
 			if animation_player:
-				_update_progress("Found AnimationPlayer - animation will play during export")
-				# Store current state
 				was_playing_before_export = animation_player.is_playing()
 				original_animation_position = animation_player.current_animation_position
-				
-				# Ensure animation is playing
 				if not animation_player.is_playing():
 					animation_player.play()
 					_update_progress("Started animation playback for export")
-			else:
-				_update_progress("No AnimationPlayer found - exporting static frames")
-		else:
-			_update_progress("No model loaded - exporting static frames")
 	
 	is_exporting = true
 	current_export_frame = actual_start_frame
-	start_frame = actual_start_frame  # Update the instance variables
+	start_frame = actual_start_frame
 	end_frame = actual_end_frame
 	
-	# Calculate total frames that will actually be exported (considering frame skipping)
 	var frames_to_export = []
 	for frame_num in range(start_frame, end_frame + 1):
 		if (frame_num - start_frame) % frame_skip == 0:
@@ -249,32 +244,24 @@ func _start_export():
 	
 	export_button.text = "Exporting..."
 	export_button.disabled = true
-	
-	# Initialize progress bar
 	progress_bar.value = 0
 	
 	_update_progress("Starting export from frame " + str(start_frame) + " to " + str(end_frame))
-	_update_progress("Total frames to export: " + str(total_frames) + " at " + str(fps) + " FPS (skipping " + str(frame_skip - 1) + " frames between renders)")
-	_update_progress("Frames to render: " + str(frames_to_export))
+	_update_progress("Total frames to export: " + str(total_frames))
 	
-	# Store the frames list and start with the first frame
 	export_frame_list = frames_to_export
 	export_frame_index = 0
 	
-	# Start the export process
 	_export_next_frame()
 
 func _export_next_frame():
 	if export_frame_index >= export_frame_list.size():
-		# закончили этот чекпоинт
 		checkpoint_index += 1
 		if checkpoint_index < total_checkpoints:
-			# переключаемся на следующий чекпоинт
 			_prepare_checkpoint()
 			export_frame_index = 0
 			_export_next_frame()
 		else:
-			# все чекпоинты закончены
 			_finish_export()
 		return
 	
@@ -346,12 +333,14 @@ func _export_next_frame():
 	_export_next_frame()
 
 func _prepare_checkpoint():
+	if models_handler.checkpoints.size() == 0:
+		return
+	
 	if checkpoint_index < total_checkpoints:
 		var state = models_handler.checkpoints[checkpoint_index]
 		models_handler.set_state(state)
 		_update_progress("Checkpoint " + str(checkpoint_index + 1) + "/" + str(total_checkpoints) + " applied")
-
-		# Заново ищем AnimationPlayer в новой модели
+		
 		animation_player = null
 		if models_spawner:
 			var loaded_model = models_spawner.get_loaded_model()
@@ -495,6 +484,8 @@ func _finish_export():
 	
 	# Complete the progress bar
 	progress_bar.value = 100
+	model_control_button_panel.show()
+	viewport_background_color_rect.show()
 	
 	_update_progress("------------------------------")
 	_update_progress("EXPORT COMPLETED!")
@@ -607,7 +598,6 @@ func add_save_point_button(index: int):
 	var btn := Button.new()
 	btn.text = "Checkpoint " + str(index + 1)
 	btn.pressed.connect(func():
-		# Загружаем сохранённое состояние из models_handler
 		if index < models_handler.checkpoints.size():
 			var state = models_handler.checkpoints[index]
 			models_handler.set_state(state)

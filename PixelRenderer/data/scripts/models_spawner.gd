@@ -1,8 +1,12 @@
 extends Node3D
 
+signal model_spawned()
+
 # UI References
 @onready var load_scene_button: Button = %LoadSceneButton
 @onready var load_scene_path: Label = %LoadScenePath
+
+@onready var load_texture_button: Button = %LoadTextureButton
 
 @onready var animation_selector: OptionButton = %AnimationSelector
 @onready var anim_play_button: Button = %AnimPlayButton
@@ -22,6 +26,8 @@ extends Node3D
 
 # File dialog for loading models
 var file_dialog: FileDialog
+
+var texture_dialog: FileDialog
 
 # Currently loaded model
 var loaded_model: Node3D = null
@@ -58,6 +64,8 @@ func _ready():
 	# Connect the load button
 	load_scene_button.pressed.connect(_on_load_button_pressed)
 	
+	load_texture_button.pressed.connect(_on_load_texture_pressed)
+	
 	# Connect animation controls
 	_setup_animation_controls()
 	
@@ -74,16 +82,6 @@ func _ready():
 	# Get reference to pixel_material script for color sampling
 	_find_pixel_material_reference()
 
-func _update_console(message: String):
-	# Update the console TextEdit with the message
-	if console:
-		console.text += message + "\n"
-		# Scroll to the bottom to show the latest message
-		console.scroll_vertical = console.get_line_count()
-	else:
-		# Fallback to print if console is not available
-		print(message)
-
 func _setup_auto_refresh():
 	# Create auto-refresh timer to periodically check for animation changes
 	auto_refresh_timer = Timer.new()
@@ -92,7 +90,7 @@ func _setup_auto_refresh():
 	add_child(auto_refresh_timer)
 	auto_refresh_timer.start()
 	
-	_update_console("Auto-refresh timer initialized - checking for animation changes every second")
+	console.log("Auto-refresh timer initialized - checking for animation changes every second")
 
 func _on_auto_refresh_timer_timeout():
 	# Check if the model structure or animations have changed
@@ -114,20 +112,20 @@ func _on_auto_refresh_timer_timeout():
 	
 	# Check if model structure changed
 	if current_node_count != last_model_node_count:
-		_update_console("Model structure changed - triggering refresh")
+		console.log("Model structure changed - triggering refresh")
 		needs_refresh = true
 		last_model_node_count = current_node_count
 	
 	# Check if animation count changed
 	if current_anim_count != last_animation_count:
-		_update_console("Animation count changed from " + str(last_animation_count) + " to " + str(current_anim_count) + " - triggering refresh")
+		console.log("Animation count changed from " + str(last_animation_count) + " to " + str(current_anim_count) + " - triggering refresh")
 		needs_refresh = true
 		last_animation_count = current_anim_count
 	
 	# Check if AnimationPlayer was lost/found
 	var found_player = _find_animation_player(loaded_model)
 	if (found_player == null) != (current_animation_player == null):
-		_update_console("AnimationPlayer availability changed - triggering refresh")
+		console.log("AnimationPlayer availability changed - triggering refresh")
 		needs_refresh = true
 	
 	if needs_refresh:
@@ -140,7 +138,7 @@ func _count_nodes_recursive(node: Node) -> int:
 	return count
 
 func _refresh_animation_controls():
-	_update_console("Refreshing animation controls...")
+	console.log("Refreshing animation controls...")
 	_setup_animation_player()
 
 func _setup_animation_controls():
@@ -207,67 +205,114 @@ func _setup_file_dialog():
 	# Set file filters for GLB and GLTF files
 	file_dialog.add_filter("*.glb", "GLB Files")
 	file_dialog.add_filter("*.gltf", "GLTF Files")
+	file_dialog.add_filter("*.fbx", "FBX Files")
 	
 	# Connect the file selected signal
 	file_dialog.file_selected.connect(_on_file_selected)
 	
 	# Add to scene tree
 	add_child(file_dialog)
+	
+	texture_dialog = FileDialog.new()
+	texture_dialog.file_mode = FileDialog.FILE_MODE_OPEN_FILE
+	texture_dialog.access = FileDialog.ACCESS_FILESYSTEM
+	texture_dialog.add_filter("*.png ; PNG Images")
+	texture_dialog.add_filter("*.jpg ; JPEG Images")
+	texture_dialog.add_filter("*.jpeg ; JPEG Images")
+	texture_dialog.add_filter("*.webp ; WebP Images")
+	texture_dialog.file_selected.connect(_on_texture_selected)
+	add_child(texture_dialog)
 
 func _on_load_button_pressed():
 	# Open the file dialog
 	file_dialog.popup_centered(Vector2i(800, 600))
 
+func _on_load_texture_pressed():
+	texture_dialog.popup_centered(Vector2i(800, 600))
+
 func _on_file_selected(path: String):
 	# Load the selected GLB/GLTF file
 	_load_model(path)
 
+func _on_texture_selected(path: String):
+	var img = Image.new()
+	var err = img.load(path)
+	if err != OK:
+		console.log("Failed to load texture: " + path)
+		return
+
+	var tex = ImageTexture.create_from_image(img)
+
+	_apply_texture_to_model(tex)
+	console.log("Applied texture: " + path.get_file())
+
+func _apply_texture_to_model(tex: Texture2D):
+	if loaded_model == null:
+		console.log("No model loaded to apply texture")
+		return
+
+	_apply_texture_recursive(loaded_model, tex)
+
+func _apply_texture_recursive(node: Node, tex: Texture2D):
+	if node is MeshInstance3D:
+		for i in range(node.get_surface_override_material_count()):
+			var mat = node.get_active_material(i)
+			if mat == null or not (mat is StandardMaterial3D):
+				# Создаём новый материал если нет
+				mat = StandardMaterial3D.new()
+				node.set_surface_override_material(i, mat)
+			
+			(mat as StandardMaterial3D).albedo_texture = tex
+
+	for child in node.get_children():
+		_apply_texture_recursive(child, tex)
+
 func _load_model(path: String):
-	# Load the GLB/GLTF file
-	var gltf = GLTFDocument.new()
-	var state = GLTFState.new()
+	var scene: Node3D = null
+	var error: int = ERR_FILE_UNRECOGNIZED
 	
-	# Load the file
-	var error = gltf.append_from_file(path, state)
+	var extension := path.get_extension().to_lower()
 	
-	if error != OK:
-		_update_console("Failed to load model: " + path)
+	if extension in ["glb", "gltf"]:
+		var gltf = GLTFDocument.new()
+		var state = GLTFState.new()
+		
+		error = gltf.append_from_file(path, state)
+		if error == OK:
+			scene = gltf.generate_scene(state)
+	elif extension == "fbx":
+		var fbx = FBXDocument.new()
+		var state = FBXState.new()
+		
+		error = fbx.append_from_file(path, state)
+		if error == OK:
+			scene = fbx.generate_scene(state)
+	else:
+		console.log("Unsupported format: " + extension)
+		load_scene_path.text = "Unsupported format: " + extension
+		return
+	
+	if error != OK or scene == null:
+		console.log("Failed to load model: " + path)
 		load_scene_path.text = "Failed to load: " + path.get_file()
 		return
 	
-	# Generate the scene
-	var scene = gltf.generate_scene(state)
-	
-	
-	if scene == null:
-		_update_console("Failed to generate scene from: " + path)
-		load_scene_path.text = "Failed to generate scene: " + path.get_file()
-		return
-	
-	# Remove previously loaded model (including temp model) if exists
 	if loaded_model != null:
 		loaded_model.queue_free()
 	
-	# Add the loaded model as a child
 	add_child(scene)
 	loaded_model = scene
 	current_model_path = path
 	
-	# Update the path label and setup animation player
 	_update_path_label()
 	_setup_animation_player()
 	
-	# Apply Normal Shader
-	
-	
-	# Trigger color sampling when a model is loaded
 	if pixel_material_script != null:
-		# Wait a frame to ensure the model is fully rendered before sampling
 		await get_tree().process_frame
 		await get_tree().process_frame
 		pixel_material_script.sample_colors_from_render()
 	
-	_update_console("Successfully loaded model: " + path)
+	console.log("Successfully loaded model: " + path)
 
 func _setup_animation_player():
 	# Find AnimationPlayer in the loaded model
@@ -276,7 +321,7 @@ func _setup_animation_player():
 	if current_animation_player != null:
 		var library = current_animation_player.get_animation_library("")
 		var anim_count = library.get_animation_list().size() if library != null else 0
-		_update_console("Found AnimationPlayer with " + str(anim_count) + " animations")
+		console.log("Found AnimationPlayer with " + str(anim_count) + " animations")
 		
 		_populate_animation_selector()
 		_enable_animation_controls(true)
@@ -288,7 +333,7 @@ func _setup_animation_player():
 		# Update tracking variables
 		last_animation_count = anim_count
 	else:
-		_update_console("No AnimationPlayer found in loaded model")
+		console.log("No AnimationPlayer found in loaded model")
 		_enable_animation_controls(false)
 		_clear_animation_selector()
 		last_animation_count = 0
@@ -372,7 +417,7 @@ func _update_loop_button_visual():
 func _on_loop_toggle_pressed():
 	is_loop_enabled = not is_loop_enabled
 	_update_loop_button_visual()
-	_update_console("Loop toggled: " + str(is_loop_enabled))
+	console.log("Loop toggled: " + str(is_loop_enabled))
 
 func _on_animation_selected(index: int):
 	if current_animation_player == null:
@@ -386,7 +431,7 @@ func _on_animation_selected(index: int):
 		current_animation_player.current_animation = anim_name
 		_setup_frame_controls()
 		_update_slider_range()
-		_update_console("Selected animation: " + anim_name)
+		console.log("Selected animation: " + anim_name)
 
 func _on_slider_drag_started():
 	is_slider_being_dragged = true
@@ -409,15 +454,15 @@ func _on_slider_value_changed(value: float):
 	current_animation_player.seek(target_position)
 	
 	if is_slider_being_dragged:
-		_update_console("Seeked to frame: " + str(int((target_position * animation_fps))) + " (position: " + str(target_position) + " seconds)")
+		console.log("Seeked to frame: " + str(int((target_position * animation_fps))) + " (position: " + str(target_position) + " seconds)")
 
 func _on_animation_finished(anim_name: String):
-	_update_console("Animation finished: " + anim_name)
+	console.log("Animation finished: " + anim_name)
 	
 	# Handle looping
 	if is_loop_enabled and current_animation_player != null:
 		current_animation_player.play(anim_name)
-		_update_console("Looping animation: " + anim_name)
+		console.log("Looping animation: " + anim_name)
 	else:
 		# Reset slider to beginning
 		anim_slider.value = 0.0
@@ -446,7 +491,7 @@ func _setup_frame_controls():
 	start_frame = 0
 	end_frame = total_frames
 	
-	_update_console("Setup frame controls - Total frames: " + str(total_frames) + " at " + str(animation_fps) + " FPS")
+	console.log("Setup frame controls - Total frames: " + str(total_frames) + " at " + str(animation_fps) + " FPS")
 
 func _get_trimmed_duration() -> float:
 	return (end_frame - start_frame) / animation_fps
@@ -462,7 +507,7 @@ func _on_start_frame_changed(value: float):
 	# Update end spin minimum to be at least start + 1
 	end_spin.min_value = start_frame + 1
 	
-	_update_console("Start frame changed to: " + str(start_frame))
+	console.log("Start frame changed to: " + str(start_frame))
 	_update_slider_range()
 
 func _on_end_frame_changed(value: float):
@@ -476,7 +521,7 @@ func _on_end_frame_changed(value: float):
 	# Update start spin maximum to be at most end - 1
 	start_spin.max_value = end_frame - 1
 	
-	_update_console("End frame changed to: " + str(end_frame))
+	console.log("End frame changed to: " + str(end_frame))
 	_update_slider_range()
 
 func _update_play_button_visual():
@@ -504,7 +549,7 @@ func _on_play_pressed():
 			current_animation_player.seek(start_time)
 			
 			_update_play_button_visual()
-			_update_console("Playing animation: " + anim_name + " from frame " + str(start_frame))
+			console.log("Playing animation: " + anim_name + " from frame " + str(start_frame))
 
 # Override existing pause function to include visual feedback  
 func _on_pause_pressed():
@@ -513,11 +558,11 @@ func _on_pause_pressed():
 	
 	if current_animation_player.is_playing():
 		current_animation_player.pause()
-		_update_console("Animation paused")
+		console.log("Animation paused")
 	else:
 		# Resume if paused
 		current_animation_player.play()
-		_update_console("Animation resumed")
+		console.log("Animation resumed")
 	
 	_update_play_button_visual()
 
@@ -529,7 +574,7 @@ func _on_stop_pressed():
 	current_animation_player.stop()
 	anim_slider.value = 0.0
 	_update_play_button_visual()
-	_update_console("Animation stopped")
+	console.log("Animation stopped")
 
 
 func _update_path_label():
@@ -554,13 +599,13 @@ func clear_loaded_model():
 		loaded_model = null
 		current_model_path = ""
 		_update_path_label()
-		_update_console("Loaded model cleared") 
+		console.log("Loaded model cleared") 
 
 func _find_pixel_material_reference():
 	# Find the PixelMaterial script node - it's a direct child of the root PixelRenderer node
 	var root_node = get_node("../../")  # Go up to the PixelRenderer root
 	pixel_material_script = root_node.get_node_or_null("PixelMaterial")
 	if pixel_material_script != null:
-		_update_console("Found PixelMaterial script reference")
+		console.log("Found PixelMaterial script reference")
 	else:
-		_update_console("WARNING: PixelMaterial script not found - color sampling will not work")
+		console.log("WARNING: PixelMaterial script not found - color sampling will not work")

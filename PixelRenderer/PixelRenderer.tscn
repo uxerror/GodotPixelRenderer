@@ -1,4 +1,4 @@
-[gd_scene load_steps=48 format=3 uid="uid://y4o6ttmh8hb4"]
+[gd_scene load_steps=49 format=3 uid="uid://y4o6ttmh8hb4"]
 
 [ext_resource type="Script" uid="uid://dhq1ywbp8nv12" path="res://PixelRenderer/data/scripts/PixelRenderer.gd" id="1_5ibnk"]
 [ext_resource type="Material" uid="uid://dn8s72rfum4y4" path="res://PixelRenderer/data/Gizmo.tres" id="2_6vt7t"]
@@ -33,6 +33,7 @@
 [ext_resource type="Script" uid="uid://bl5gdvkylmyg8" path="res://PixelRenderer/data/scripts/models_spawner.gd" id="22_t0cwl"]
 [ext_resource type="Texture2D" uid="uid://b1eg0gu4npj5r" path="res://PixelRenderer/data/icons/delete.png" id="23_ilx0h"]
 [ext_resource type="PackedScene" uid="uid://6f4rhpj0da3q" path="res://Sample/Skeleton_Minion.glb" id="27_wwtbg"]
+[ext_resource type="Script" uid="uid://bbsiijnoyxw4b" path="res://PixelRenderer/data/scripts/console.gd" id="28_e8x0m"]
 [ext_resource type="Script" uid="uid://1oqvcrn8dkab" path="res://PixelRenderer/data/scripts/view_materials.gd" id="34_owbk2"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_6vt7t"]
@@ -242,6 +243,24 @@ expand_icon = true
 
 [node name="LoadScenePath" type="Label" parent="MainUI/HBoxContainer/HSplitContainer/MainConfigScrollContainer/LeftPanel/SceneLoaded"]
 unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.473976, 0.473976, 0.473976, 1)
+text = "://path-to-loaded-asset"
+clip_text = true
+
+[node name="TextureLoaded" type="HBoxContainer" parent="MainUI/HBoxContainer/HSplitContainer/MainConfigScrollContainer/LeftPanel"]
+layout_mode = 2
+
+[node name="LoadTextureButton" type="Button" parent="MainUI/HBoxContainer/HSplitContainer/MainConfigScrollContainer/LeftPanel/TextureLoaded"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 36)
+layout_mode = 2
+text = "LOAD TEXTURE"
+icon = ExtResource("4_sen5r")
+expand_icon = true
+
+[node name="LoadScenePath" type="Label" parent="MainUI/HBoxContainer/HSplitContainer/MainConfigScrollContainer/LeftPanel/TextureLoaded"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.473976, 0.473976, 0.473976, 1)
@@ -1165,6 +1184,7 @@ visible = false
 layout_mode = 2
 
 [node name="ViewportBackgroundColorRect" type="ColorRect" parent="MainUI/HBoxContainer/HSplitContainer/Renderer/Renderer"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(800, 800)
 layout_mode = 2
 color = Color(0.0911215, 0.0911214, 0.0911214, 1)
@@ -1177,7 +1197,8 @@ layout_mode = 2
 texture = SubResource("ViewportTexture_tkbio")
 stretch_mode = 3
 
-[node name="Panel" type="GridContainer" parent="MainUI/HBoxContainer/HSplitContainer/Renderer/Renderer/PixelCanvas"]
+[node name="ModelControlButtonPanel" type="GridContainer" parent="MainUI/HBoxContainer/HSplitContainer/Renderer/Renderer/PixelCanvas"]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 1.0
@@ -1192,11 +1213,11 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 columns = 3
 
-[node name="Button_Model_Up_Right_Empty" type="AspectRatioContainer" parent="MainUI/HBoxContainer/HSplitContainer/Renderer/Renderer/PixelCanvas/Panel"]
+[node name="Button_Model_Up_Right_Empty" type="AspectRatioContainer" parent="MainUI/HBoxContainer/HSplitContainer/Renderer/Renderer/PixelCanvas/ModelControlButtonPanel"]
 custom_minimum_size = Vector2(36, 36)
 layout_mode = 2
 
-[node name="Button_Model_Up" type="Button" parent="MainUI/HBoxContainer/HSplitContainer/Renderer/Renderer/PixelCanvas/Panel"]
+[node name="Button_Model_Up" type="Button" parent="MainUI/HBoxContainer/HSplitContainer/Renderer/Renderer/PixelCanvas/ModelControlButtonPanel"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(36, 36)
 layout_mode = 2
@@ -1204,11 +1225,11 @@ icon = ExtResource("7_klpv1")
 icon_alignment = 1
 expand_icon = true
 
-[node name="Button_Model_Up_Left_Empty" type="AspectRatioContainer" parent="MainUI/HBoxContainer/HSplitContainer/Renderer/Renderer/PixelCanvas/Panel"]
+[node name="Button_Model_Up_Left_Empty" type="AspectRatioContainer" parent="MainUI/HBoxContainer/HSplitContainer/Renderer/Renderer/PixelCanvas/ModelControlButtonPanel"]
 custom_minimum_size = Vector2(36, 36)
 layout_mode = 2
 
-[node name="Button_Model_Left" type="Button" parent="MainUI/HBoxContainer/HSplitContainer/Renderer/Renderer/PixelCanvas/Panel"]
+[node name="Button_Model_Left" type="Button" parent="MainUI/HBoxContainer/HSplitContainer/Renderer/Renderer/PixelCanvas/ModelControlButtonPanel"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(36, 36)
 layout_mode = 2
@@ -1216,7 +1237,7 @@ icon = ExtResource("9_lbuph")
 icon_alignment = 1
 expand_icon = true
 
-[node name="Button_Model_Down" type="Button" parent="MainUI/HBoxContainer/HSplitContainer/Renderer/Renderer/PixelCanvas/Panel"]
+[node name="Button_Model_Down" type="Button" parent="MainUI/HBoxContainer/HSplitContainer/Renderer/Renderer/PixelCanvas/ModelControlButtonPanel"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(36, 36)
 layout_mode = 2
@@ -1224,7 +1245,7 @@ icon = ExtResource("8_75uvr")
 icon_alignment = 1
 expand_icon = true
 
-[node name="Button_Model_Right" type="Button" parent="MainUI/HBoxContainer/HSplitContainer/Renderer/Renderer/PixelCanvas/Panel"]
+[node name="Button_Model_Right" type="Button" parent="MainUI/HBoxContainer/HSplitContainer/Renderer/Renderer/PixelCanvas/ModelControlButtonPanel"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(36, 36)
 layout_mode = 2
@@ -1263,6 +1284,7 @@ empty_selection_clipboard_enabled = false
 wrap_mode = 1
 indent_wrapped_lines = true
 scroll_smooth = true
+script = ExtResource("28_e8x0m")
 
 [node name="RenderConfigFoldableContainer" type="FoldableContainer" parent="MainUI"]
 unique_name_in_owner = true
