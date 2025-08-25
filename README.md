@@ -22,7 +22,7 @@ This fork is maintained independently to provide updated features for Godot 4.5+
 
 ## 📥 Downloads
 
-* **🆓 [GitHub Repository](https://github.com/bukkbeek/GodotPixelRenderer)**: Free and open source
+* **🆓 [GitHub Repository](https://github.com/uxerror/RetroForge)**: Free and open source
 
 <div align="center">
   <img src="PixelRenderer_screenshot.png" alt="Pixel Renderer Interface Screenshot" width="800">
@@ -72,18 +72,18 @@ This fork is maintained independently to provide updated features for Godot 4.5+
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/bukkbeek/GodotPixelRenderer.git
-   cd GodotPixelRenderer
+   git clone https://github.com/uxerror/RetroForge.git
+   cd RetroForge
    ```
 2. Open the project in Godot 4.5+
-3. Run `PixelRenderer/PixelRenderer.tscn`
+3. Run `RetroForge/PixelRenderer.tscn`
 
 ### Usage
 
-1. **Load Model**: Select a GLB/GLTF file
+1. **Load Model**: Select a GLB/GLTF/FBX file
 2. **Adjust Effects**: Pixelation, colors, shaders
 3. **Set Camera**: Position, rotation, and choose a preset view
-4. **Save Checkpoint(s)**: Store model/camera states and access them via auto-generated buttons
+4. **Save Checkpoint(s)**: Store model/camera states.
 5. **Export**: All checkpoints are exported sequentially with unique filenames
 
 ## 📄 License
